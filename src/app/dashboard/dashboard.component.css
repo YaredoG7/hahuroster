@@ -1,0 +1,23 @@
+#sidebar{
+    height:100vh;
+    
+}
+
+#sidebar li {
+    width: auto;
+}
+
+#sidebar button{
+    width: 100%;
+}
+#sidebar ul li a{
+    padding: 5px;
+    font-size: 0.8em;
+    display: block;
+}
+
+
+#sidebar ul li.active > a, a[aria-expanded="true"]{
+    color: #fff; 
+    background: #00ace6;
+}

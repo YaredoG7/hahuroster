@@ -1,0 +1,165 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col bg-transparent text-dark text-center">
+      <a class="navbar-brand"><h5>አጠቃላይ የሰራተኞች ዝርዝር እና መረጃ</h5></a>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-4 empDetail">
+      <div class="card border-dark mb-3" style="max-width: 25rem;">
+        <div class="card-header bg-transparent border-dark">የተመረጠው ሰራተኛ</div>
+        <div class="card-body text-dark">
+          <!-- Adding the details of the selected employee -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-user fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="ሙሉ ስም"
+              [(ngModel)]="employee.fullName"
+            />
+          </div>
+          <!-- Adding the second employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-id-badge fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="መለያ ቁጥር"
+              [(ngModel)]="employee.empId"
+            />
+          </div>
+
+          <!-- Adding the third employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-phone-square fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="ሞባይል ስልክ"
+              [(ngModel)]="employee.mobilePhone"
+            />
+          </div>
+
+          <!-- Adding the 4th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-briefcase fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="ስራ ሀላፊነት"
+              [(ngModel)]="employee.position"
+            />
+          </div>
+          <!-- Adding the 5th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-location-arrow fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="አድራሻ"
+              [(ngModel)]="employee.address"
+            />
+          </div>
+          <!-- Adding the 6th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-user-plus fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="ተያዥ-ተጠሪ "
+              [(ngModel)]="employee.emrContactName"
+            />
+          </div>
+
+          <!-- Adding the 7th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-phone-square fa-x"></i
+              ></span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              placeholder="ተያዥ-ተጠሪ ስልክ"
+              [(ngModel)]="employee.emrContactPhone"
+            />
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-dark">
+          <button
+            class="btn btn-sm btn-warning"
+            [routerLink]="['/employees/edit', selectedEmployee.id]"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="deleteEmployee(selectedEmployee.id)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-8 ">
+      <div class="showTable">
+        <table class="table table-sm table-striped table-dark table-hover">
+          <thead>
+            <tr>
+              <th>Emp ID</th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Phone</th>
+              <th>Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let em of getEmployees()" (click)="getSelectedEmp(em)">
+              <td>{{ em.empId }}</td>
+              <td>{{ em.fullName }}</td>
+              <td>{{ em.department }}</td>
+              <td>{{ em.mobilePhone }}</td>
+              <td>{{ em.address }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn-success" routerLink="/employees/create">
+        Create New Employee
+      </button>
+    </div>
+  </div>
+</div>

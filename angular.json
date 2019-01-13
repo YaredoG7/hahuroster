@@ -23,9 +23,20 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css", 
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "calendar/css/bootstrap-datetimepicker.min.css"
+            
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "calendar/js/jquery.calendars.min.js", 
+              "calendar/js/jquery.calendars.ethiopian.min.js", 
+              "calendar/js/jquery.calendars.ethiopian-am.js", 
+              "calendar/js//bootstrap-calendars.min.js", 
+              "calendar/js/bootstrap-datetimepicker.min.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -1,0 +1,10 @@
+.salryInput input, select {
+    margin: 0px 10px;
+ 
+  border: none;
+   
+}
+
+.salryInput span {
+    border: none;
+}

@@ -1,0 +1,48 @@
+.editable{
+    border: 2px green solid;
+    
+}
+
+.dateEntry input {
+    border: 1px black  solid;
+   
+}
+
+input {
+    border: 1px black  solid;
+   
+}
+
+.empDetail p{
+    border-bottom: 1px dotted black;
+    width: 100%;
+    float: left;
+    color: #000;
+    
+}
+
+.empDetail span, textarea{
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    
+
+}
+
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+  }
+  .custom-day.focused {
+    background-color: #e6e6e6;
+  }
+  .custom-day.range, .custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+  }
+  .custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+  }

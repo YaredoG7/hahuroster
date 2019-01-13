@@ -1,0 +1,73 @@
+<div class="container-fluid">
+    <div class="row">
+    <div class="col bg-dark text-white text-center">
+       <a class="navbar-brand"><h1>ሀሁ የስራ ሰዓት ሮስተር</h1></a>
+   </div>
+</div>
+<div class="row">
+        <div class="col bg-info text-white">
+                <a class="navbar-brand"><h3>አሁን የሚጠቀመዉ ድርጅት: </h3></a>
+                <a class="navbar-brand float-right"><h6>የሚጠቀመዉ ሰው: </h6></a>
+            </div>
+</div>
+<div class="row">
+    <div id="sidebar" class="col-3 bg-dark text-white">
+        <br>
+        <br>
+        <!-- *ngIf="checkLogin()" -- goes here in the ul -->
+           <ul class="list-unstyled" >
+               <li>
+                    <a routerLink="/main" routerLinkActive="active">
+                        <button class="btn btn-outline-warning text-white">
+                                <h4><i class="fa fa-home" aria-hidden="true"> ቀዳሚ ገጵ </i></h4> 
+                        </button>
+                            
+           
+                       </a> <br>
+
+            </li>
+            <li>
+                    <a routerLink="/employees"  routerLinkActive="active">
+                    <button class="btn btn-outline-warning text-white">
+                     <h4><i class="fa fa-users" aria-hidden="true"> ሰራተኞች</i></h4>
+                    </button>
+                       </a> <br>
+            </li>  
+            <li>
+                    <a routerLink="/timetrack" routerLinkActive="active">
+                            <button class="btn btn-outline-warning text-white">
+                            <h4><i class="fa  fa-clock-o" aria-hidden="true"> የሰዓት ሮስተር</i></h4></button>
+                       </a><br>
+            </li>   
+            <li>
+                    <a routerLink="/payment" routerLinkActive="active">
+                            <button class="btn btn-outline-warning text-white">
+                            <h4><i class="fa  fa-money" aria-hidden="true"> የክፍያ ገጵ</i></h4></button>
+                       </a><br>
+            </li>      
+                        
+                <li>
+                        <a routerLink="/reports" routerLinkActive="active">
+                                <button class="btn btn-outline-warning text-white">
+                                <h4><i class="fa   fa-bar-chart" aria-hidden="true"> አጠቃላይ ሪፖርት</i></h4></button>
+                           </a><br>
+                </li>   
+                <li>
+                                <a>
+                                        <button class="btn btn-outline-danger text-white" (click)="logout()">
+                                        <h4><i class="fa  " aria-hidden="true">Logout</i></h4></button>
+                                   </a><br>
+                        </li>       
+                       
+                        
+               
+           </ul>
+            
+    </div>
+
+    <div class="col-9 p-2 ">
+    <router-outlet></router-outlet>
+   </div>
+
+</div>
+</div>
