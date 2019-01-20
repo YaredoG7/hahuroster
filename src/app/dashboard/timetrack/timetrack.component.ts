@@ -1,20 +1,16 @@
-
-import { Component } from "@angular/core";
-import {
-  NgbDateStruct,
-  NgbCalendar,
-  NgbDate
-} from "@ng-bootstrap/ng-bootstrap";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { Employee } from "../../model/employee.model";
-import { TimeTrack } from "../../model/timeTrack.model";
-import { TimeTrackRepository } from "../../model/timetrack.repository";
-import { EmployeeRepository } from "../../model/employee.repository";
+import { Component } from '@angular/core';
+import {NgbDateStruct,NgbCalendar,NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Employee } from '../../model/employee.model';
+import { TimeTrack } from '../../model/timeTrack.model';
+import { TimeTrackRepository } from '../../model/timetrack.repository';
+import { EmployeeRepository } from '../../model/employee.repository';
+import {NgForm} from "@angular/forms"; 
 
 @Component({
-  selector: "app-timetrack",
-  templateUrl: "./timetrack.component.html",
-  styleUrls: ["./timetrack.component.css"]
+  selector: 'app-timetrack',
+  templateUrl: './timetrack.component.html',
+  styleUrls: ['./timetrack.component.css']
 })
 export class TimetrackComponent {
   model: NgbDateStruct;
@@ -27,7 +23,7 @@ export class TimetrackComponent {
   toDate: NgbDate;
   holidaySelect: boolean;
   disabled: boolean;
-  empID = "";
+  empID = '';
   employee: Employee;
   timetrack: TimeTrack;
 
@@ -40,7 +36,7 @@ export class TimetrackComponent {
     this.selectToday();
     this.holidaySelect = false;
     this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), "d", 10);
+    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     this.displayVal = false;
     this.timetrack = new TimeTrack(0);
     this.employee = new Employee(1);
@@ -51,7 +47,7 @@ export class TimetrackComponent {
 
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         result => {
           this.closeResult = `Closed with: ${result}`;
@@ -70,10 +66,10 @@ export class TimetrackComponent {
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       console.log(reason);
-      return "by pressing ESC";
+      return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       console.log(reason);
-      return "by clicking on a backdrop";
+      return 'by clicking on a backdrop';
     } else {
       console.log(reason);
       return `with: ${reason}`;
@@ -85,20 +81,22 @@ export class TimetrackComponent {
   searchEmp(empID: string) {
     this.employee = this.employeeRepo.getEmployeeByEmpId(empID.trim());
     return this.employee;
-    //console.log(this.employee)
+    // console.log(this.employee)
   }
 
   // handle date entry
 
-  // handle time entry
+  save(form: NgForm){
+
+  }
 
   isAbsent() {
     this.timetrack = new TimeTrack(
       this.employee.id,
-      " ",
-      "2019-12-12",
-      "2112-21-12",
-      "2100-12-12",
+      ' ',
+      '2019-12-12',
+      '2112-21-12',
+      '2100-12-12',
       2,
       12,
       10,
@@ -108,27 +106,27 @@ export class TimetrackComponent {
   }
 
   hoursWasted() {
-    this.timetrack = new TimeTrack(5, "", "", "", "", 3, 3);
+    this.timetrack = new TimeTrack(5, '', '', '', '', 3, 3);
     this.timetrackRepo.hoursWasted(this.timetrack);
   }
 
   overTime() {
-    this.timetrack = new TimeTrack(2, "", "", "", "", 0, 0, 10, 30);
+    this.timetrack = new TimeTrack(2, '', '', '', '', 0, 0, 10, 30);
     this.timetrackRepo.overTime(this.timetrack);
   }
 
   sickLeave() {
-    this.timetrack = new TimeTrack(2, "", "", "2012-10-30");
+    this.timetrack = new TimeTrack(2, '', '', '2012-10-30');
     this.timetrackRepo.sickLeave(this.timetrack);
   }
 
   insertHoliday() {
-    this.timetrack = new TimeTrack(5, "", "", "", "2017-12-30");
+    this.timetrack = new TimeTrack(5, '', '', '', '2017-12-30');
     this.timetrackRepo.insertHoliday(this.timetrack);
   }
 
   getDate() {
-    return this.model.year + "-" + this.model.month + "-" + this.model.day;
+    return this.model.year + '-' + this.model.month + '-' + this.model.day;
   }
 
   selectToday() {
@@ -136,11 +134,11 @@ export class TimetrackComponent {
   }
 
   setDate(): string {
-    return this.model.year + "-" + this.model.month + "-" + this.model.day;
+    return this.model.year + '-' + this.model.month + '-' + this.model.day;
   }
 
   setTime(): string {
-    return this.time.hour + ":" + this.time.minute;
+    return this.time.hour + ':' + this.time.minute;
   }
 
   onDateSelection(date: NgbDate) {

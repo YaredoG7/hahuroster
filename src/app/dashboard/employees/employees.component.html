@@ -21,7 +21,7 @@
               readonly
               class="form-control bg-white"
               placeholder="ሙሉ ስም"
-              [(ngModel)]="employee.fullName"
+              [(ngModel)]="selectedEmployee?.fullName || display"
             />
           </div>
           <!-- Adding the second employee attribute -->
@@ -36,7 +36,7 @@
               readonly
               class="form-control bg-white"
               placeholder="መለያ ቁጥር"
-              [(ngModel)]="employee.empId"
+              [(ngModel)]="selectedEmployee?.empId || display"
             />
           </div>
 
@@ -52,7 +52,7 @@
               readonly
               class="form-control bg-white"
               placeholder="ሞባይል ስልክ"
-              [(ngModel)]="employee.mobilePhone"
+              [(ngModel)]="selectedEmployee?.mobilePhone || display"
             />
           </div>
 
@@ -68,7 +68,7 @@
               readonly
               class="form-control bg-white"
               placeholder="ስራ ሀላፊነት"
-              [(ngModel)]="employee.position"
+              [(ngModel)]="selectedEmployee?.position || display"
             />
           </div>
           <!-- Adding the 5th employee attribute -->
@@ -83,7 +83,7 @@
               readonly
               class="form-control bg-white"
               placeholder="አድራሻ"
-              [(ngModel)]="employee.address"
+              [(ngModel)]="selectedEmployee?.address || display"
             />
           </div>
           <!-- Adding the 6th employee attribute -->
@@ -98,7 +98,7 @@
               readonly
               class="form-control bg-white"
               placeholder="ተያዥ-ተጠሪ "
-              [(ngModel)]="employee.emrContactName"
+              [(ngModel)]="selectedEmployee?.emrContactName || display"
             />
           </div>
 
@@ -114,20 +114,22 @@
               readonly
               class="form-control bg-white"
               placeholder="ተያዥ-ተጠሪ ስልክ"
-              [(ngModel)]="employee.emrContactPhone"
+              [(ngModel)]="selectedEmployee?.emrContactPhone || display"
             />
           </div>
         </div>
         <div class="card-footer bg-transparent border-dark">
           <button
             class="btn btn-sm btn-warning"
-            [routerLink]="['/employees/edit', selectedEmployee.id]"
+            [routerLink]="['/employees/edit', selectedEmployee?.id || display]"
           >
             Edit
           </button>
+          <!--  (click)="deleteEmployee(selectedEmployee?.id || display)" -->
           <button
             class="btn btn-sm btn-danger"
-            (click)="deleteEmployee(selectedEmployee.id)"
+            (click)="openVerticallyCentered(content)"
+           
           >
             Delete
           </button>
@@ -147,9 +149,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let em of getEmployees()" (click)="getSelectedEmp(em)">
-              <td>{{ em.empId }}</td>
-              <td>{{ em.fullName }}</td>
+            <tr *ngFor="let em of getEmployees()" [class.bg-success]="getSelected(em)" (click)="getSelectedEmp(em)" (mouseover)="isSelected=em.empId">
+              <td >{{em.empId}}</td>
+              <td>{{ em.fullName}}</td>
               <td>{{ em.department }}</td>
               <td>{{ em.mobilePhone }}</td>
               <td>{{ em.address }}</td>
@@ -163,3 +165,45 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+<!-- Modal content -->
+<ng-template #content let-modal>
+    <div class="modal-header bg-dark text-white">
+      <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span class="text-danger" aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-white text-dark">
+      አዲስ መረጃ በ {{ selectedEmployee?.fullName || display}} ላይ ይመዘገባል! ቀጥል?
+    </div>
+    <div class="modal-footer warning ">
+      <button
+        type="button"
+        class="btn text-white bg-success"
+        (click)="handleModal(true)"
+      >
+        መዝግብ
+      </button>
+      <button
+        type="button"
+        class="btn text-white bg-danger"
+        (click)="handleModal(false)"
+      >
+        ተመለስ
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- <pre>Hello {{deleteEmp}}</pre> -->
+  
+  <!-- End of modal content  -->

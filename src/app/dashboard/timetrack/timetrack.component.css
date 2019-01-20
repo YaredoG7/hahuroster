@@ -46,3 +46,5 @@ input {
   .custom-day.faded {
     background-color: rgba(2, 117, 216, 0.5);
   }
+   input.ng-dirty.ng-invalid { border: 2px solid #ff0000 }
+   input.ng-dirty.ng-valid { border: 2px solid #6bc502 } 

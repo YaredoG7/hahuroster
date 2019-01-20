@@ -1,44 +1,48 @@
 import { Injectable } from "@angular/core"; 
 import {Employee} from "../model/employee.model"; 
 import {Salary} from './salary.model'; 
+import {RestDataSource} from "./rest.datasource"; 
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class Payment{
-    public taxRate: number [] = [];
+export class SalaryRepository{
+
     private slaries: Salary [] = [];
-    public deduction: number = 0; 
     public employee: Employee; 
 
-    // save slaries
-    saveSlary(salary: Salary){
-       this.slaries.push(salary); 
+    constructor(private dataSource: RestDataSource){
+         dataSource.getSalaries().subscribe(data => {
+             this.slaries = data; 
+             console.log(data); 
+         })
     }
 
-    getSlary():Salary []{
+    // save slaries
+    saveSalary(salary: Salary): Observable<Salary>{
+        console.log("I have been called..")
+        return this.dataSource.saveSalary(salary);
+    }
+
+    getSalaries():Salary []{
       return this.slaries; 
     }
     
     // I will need a new payment model dedicated for the tax values to be added to it and then 
     
     addTotalTax(rate: number){
-       this.taxRate.push(rate); 
-       this.recalculate(); 
+      
     }
 
     recalculate(){
-       this.taxRate.forEach(tax =>{
-           this.deduction +=( this.employee.grossPayment * tax)
-       }
-       )
+      
     }
 
     netPay(){
-        this.employee.grossPayment - this.deduction;
+     
     }
 
     clear(){
-        this.deduction = 0; 
-        this.taxRate = []; 
+      
     }
 }
 

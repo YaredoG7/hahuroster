@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './routes/app-routing.module';
 import { AppComponent } from './app.component';
-import {DashboardModule} from './dashboard/dashboard.module'; 
+import {DashboardModule} from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
     AppComponent
+    
   ],
   imports: [
     BrowserModule,

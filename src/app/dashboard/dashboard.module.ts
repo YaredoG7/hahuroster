@@ -12,13 +12,18 @@ import { TimetrackComponent } from './timetrack/timetrack.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { PaymentComponent } from './payment/payment.component';
 import { ReportsComponent } from './reports/reports.component';
+import { NotificationComponent } from '../notification/notification.component'; 
+import {NotificationService} from '../notification/notification.service'; 
+
 
 
 
 @NgModule({
     imports: [ModelModule, BrowserModule, FormsModule, RouterModule, NgbModule],
+    providers: [NotificationService],
     declarations: [DashboardComponent, EmployeesComponent, LoginComponent, MainComponent, 
-          EditEmployeeComponent, TimetrackComponent, PaymentComponent, ReportsComponent ], 
-    exports: [DashboardComponent]
+          EditEmployeeComponent, TimetrackComponent, PaymentComponent, ReportsComponent , NotificationComponent], 
+    exports: [DashboardComponent], 
+    
 })
 export class DashboardModule{}

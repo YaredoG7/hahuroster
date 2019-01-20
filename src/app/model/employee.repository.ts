@@ -3,6 +3,8 @@ import {Injectable} from "@angular/core";
 import {Employee} from "./employee.model"; 
 import {RestDataSource} from "./rest.datasource"; 
 import { TimeTrack } from '../model/timeTrack.model';
+import { NotificationService} from '../notification/notification.service';
+import {Router} from "@angular/router"; 
 
 @Injectable()
 export class EmployeeRepository {
@@ -12,11 +14,14 @@ export class EmployeeRepository {
     timetrack: TimeTrack = new TimeTrack();  
 
 
-    constructor(private dataSource: RestDataSource){
-        dataSource.getEmployees().subscribe(data => {
-            this.employees = data; 
-            this.departments = data.map(em => em.department)
-               .filter((c, index, array) => array.indexOf(c) == index).sort(); 
+    constructor(private dataSource: RestDataSource, private notificationService: NotificationService, private router: Router){
+        dataSource.getEmployees().subscribe((resp) => {
+           this.employees = resp.body; 
+           if(resp.status == 200){
+            this.notificationService.success('All employees has been retrived')
+           } }, error => {
+            this.notificationService.error(error); 
+            console.log(error); 
         });
 
         dataSource.getTimeTracks().subscribe(timetrack => {
@@ -51,13 +56,30 @@ export class EmployeeRepository {
     saveEmployee(employee: Employee){
         if(employee.id == null || employee.id == 0){
             employee.id = this.generateID(); 
-            this.dataSource.saveEmployee(employee).subscribe(p => this.employees.push(p));
+            this.dataSource.saveEmployee(employee).subscribe((resp) =>{
+                this.employees.push(resp.body)
+                    this.notificationService.success('Saved successfully')
+                    setTimeout(()=>{
+                        this.router.navigateByUrl("/employees"); 
+                      }, 5000)
+            }, error => {
+                this.notificationService.error(error);
+              //  console.log("Reached me..." + error)
+            });
             this.timetrack = new TimeTrack(employee.id, employee.empId)
             this.dataSource.registerTime(this.timetrack).subscribe(p => this.timetracks.push(p)); 
+            
         } else {
-            this.dataSource.updateEmployee(employee).subscribe(p => {
-                 this.employees.splice(this.employees.findIndex(p => p.id == employee.id), 1, employee)
-                })
+            this.dataSource.updateEmployee(employee).subscribe((resp) =>{
+                this.employees.push(resp.body)
+                    this.notificationService.success('Upated successfully')
+                    setTimeout(()=>{
+                        this.router.navigateByUrl("/employees"); 
+                      }, 5000)
+            }, error => {
+                this.notificationService.error(error);
+              //  console.log("Reached me..." + error)
+            });
         }
     }
 
@@ -72,8 +94,11 @@ export class EmployeeRepository {
     }
 
     deleteEmployee(id:number){
-        this.dataSource.deleteEmployee(id).subscribe(p => {
-            this.employees.splice(this.employees.findIndex(p => p.id == id), 1);
+        this.dataSource.deleteEmployee(id).subscribe((resp) =>{
+            this.notificationService.success('Deleted successfully')
+            this.employees.splice(this.employees.findIndex(resp => resp.id == id), 1);
+        }, error => {
+            this.notificationService.error(error)
         })
         this.dataSource.deleteTimeTrack(id).subscribe(tr => {
             this.timetracks.splice(this.timetracks.findIndex(tr => tr.id == id), 1);

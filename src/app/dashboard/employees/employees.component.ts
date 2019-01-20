@@ -1,7 +1,8 @@
-
 import { Component } from '@angular/core';
 import { Employee } from '../../model/employee.model';
 import { EmployeeRepository } from '../../model/employee.repository';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-employees',
@@ -11,10 +12,13 @@ import { EmployeeRepository } from '../../model/employee.repository';
 export class EmployeesComponent {
   selectedEmployee: Employee;
   display: string;
+  isSelected: string; 
+  deleteEmp: boolean; 
 
-  constructor(private repository: EmployeeRepository) {
+  constructor(private repository: EmployeeRepository, private modalService: NgbModal) {
     this.selectedEmployee = new Employee(0);
-    this.display = 'Employee name';
+    this.display = '';
+    this.deleteEmp = false; 
   }
 
   getEmployees(): Employee[] {
@@ -27,6 +31,12 @@ export class EmployeesComponent {
     this.selectedEmployee = emp;
   }
 
+  // get selected employee
+
+  getSelected(emp: Employee): boolean {
+    return this.isSelected === emp.empId;
+  }
+
   deleteEmployee(empId: number) {
     this.repository.deleteEmployee(empId);
     this.selectedEmployee = new Employee(0);
@@ -34,5 +44,51 @@ export class EmployeesComponent {
 
   getDepartment(): string[] {
     return this.repository.getDepartment();
+  }
+
+  
+
+  // modal 
+
+  closeResult: string;
+
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          console.log(this.closeResult);
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          console.log(this.closeResult);
+        }
+      );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  handleModal(yes: boolean){
+    if (yes==true){
+      this.modalService.dismissAll(); 
+      this.deleteEmp = true;  
+      this.deleteEmployee(this.selectedEmployee.id); 
+    } else {
+      this.modalService.dismissAll(); 
+      this.deleteEmp = false;  
+    }
+   
+  }
+  openVerticallyCentered(content) {
+    this.modalService.open(content, { centered: true });
   }
 }

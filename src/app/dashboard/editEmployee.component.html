@@ -1,68 +1,287 @@
+<style>
+  input.ng-dirty.ng-invalid {
+    border: 2px solid #ff0000;
+  }
+  input.ng-dirty.ng-valid {
+    border: 2px solid #6bc502;
+  }
+</style>
+
 <div class="row">
-<div class="col-2">
+  <div class="col-2"></div>
+  <div class="col-12">
+    <form novalidate #form="ngForm" (ngSubmit)="save(form)">
+      
+          <div
+            class="bg-danger text-white p-2 mb-2"
+            *ngIf="formSubmitted && form.invalid"
+          >
+            There are problems with the form
+            <ul>
+              <li *ngFor="let error of getFormValidationMessages(form)">
+                {{ error }}
+              </li>
+            </ul>
+          </div>
 
-</div>
-<div class="col-12">
-<form novalidate #form="ngForm" (ngSubmit)="save(form)" > 
-
-        <div class="bg-primary p-2 text-dark text-center" [class.bg-info]="editing" [class.text-dark]="editing">
-              <h5> የሰራተኛ  {{editing ? "ማስተካከያ": "መዝገብ"}} </h5>
+      <div
+        class="bg-primary p-2 text-dark text-center"
+        [class.bg-info]="editing"
+        [class.text-dark]="editing"
+      >
+        <h5>የሰራተኛ {{ editing ? "ማስተካከያ" : "መዝገብ" }}</h5>
+      </div>
+      <div class="row" style="margin-top: 20px;">
+        <div class="col-4">
+          <p class="text-center text-primary">ስለ ሰራተኛው</p>
+          <p>
+            መለያ ቁጥር: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="empId"
+              [(ngModel)]="employee.empId"
+              #name="ngModel"
+              required
+              minlength="5"
+            />
+          </p>
+          <p>
+            ሙሉ ስም: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="fullName"
+              [(ngModel)]="employee.fullName"
+              #fullname="ngModel"
+              required
+              minlength="5"
+              pattern="^[A-Za-z ]+$"
+            />
+          </p>
+          <p>
+            ስራ ሀላፊነት: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="position"
+              [(ngModel)]="employee.position"
+            />
+          </p>
+          <p>
+            ዲፓርትመንት: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="department"
+              [(ngModel)]="employee.department"
+            />
+          </p>
+          <p>
+            ጾታ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="gender"
+              [(ngModel)]="employee.gender"
+            />
+          </p>
+          <p>
+            ትውልድ ቀን: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="dateOfBirth"
+              [(ngModel)]="employee.dateOfBirth"
+            />
+          </p>
+          <p>
+            የቤት ስልክ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="homePhone"
+              [(ngModel)]="employee.homePhone"
+            />
+          </p>
+          <p>
+            ሞባይል ስልክ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="mobilePhone"
+              [(ngModel)]="employee.mobilePhone"
+              #mobile="ngModel"
+              required
+              minlength="5"
+            />
+          </p>
+          <p>
+            አድራሻ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="address"
+              [(ngModel)]="employee.address"
+            />
+          </p>
+          <p>
+            ኢሜል : &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="emailAddress"
+              [(ngModel)]="employee.emailAddress"
+            />
+          </p>
+          <p>
+            ቀን : &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="created"
+              [(ngModel)]="employee.created"
+            />
+          </p>
         </div>
-        <div class="row" style="margin-top: 20px;">
-       <div class="col-4" >
-    <p class="text-center text-primary" >ስለ ሰራተኛው</p>
-                <p>መለያ ቁጥር:  &nbsp; <input class="float-right" type="form-control" name="empId" [(ngModel)]="employee.empId"/> </p> 
-                <p>ሙሉ ስም:  &nbsp; <input class="float-right" type="form-control" name="fullName" [(ngModel)]="employee.fullName" /></p>
-                <p>ስራ ሀላፊነት:  &nbsp; <input class="float-right" type="form-control" name="position" [(ngModel)]="employee.position" />  </p>
-                <p>ዲፓርትመንት:  &nbsp; <input class="float-right" type="form-control" name="department" [(ngModel)]="employee.department" /></p>
-                <p>ጾታ:  &nbsp; <input class="float-right" type="form-control" name="gender" [(ngModel)]="employee.gender" /> </p> 
-                <p>ትውልድ ቀን:  &nbsp; <input class="float-right" type="form-control" name="dateOfBirth" [(ngModel)]="employee.dateOfBirth" /> </p>
-                <p>የቤት ስልክ:  &nbsp; <input class="float-right" type="form-control" name="homePhone" [(ngModel)]="employee.homePhone" /></p>
-                <p>ሞባይል ስልክ:  &nbsp; <input class="float-right" type="form-control" name="mobilePhone" [(ngModel)]="employee.mobilePhone" />  </p>
-                <p>አድራሻ:  &nbsp; <input class="float-right" type="form-control" name="address" [(ngModel)]="employee.address" /></p>
-                <p>ኢሜል :  &nbsp; <input class="float-right" type="form-control" name="emailAddress"  [(ngModel)]="employee.emailAddress" /></p>
-                <p>ቀን :  &nbsp; <input class="float-right" type="form-control" name="created" [(ngModel)]="employee.created" /></p>
-                        </div>
-                        <div class="col-4" >
-         <p class="text-center text-primary" >ተያዥ/የአደጋ ጊዜ ተጠሪ</p>
-                <p>የተጠሪው ስም:  &nbsp; <input class="float-right" type="form-control" name="emrContactName" [(ngModel)]="employee.emrContactName" /> </p> 
-                <p>የተጠሪው አድራሻ:  &nbsp; <input class="float-right" type="form-control" name="emrContactAddress" [(ngModel)]="employee.emrContactAddress" /></p>
-                <p>የተጠሪው ስልክ:  &nbsp; <input class="float-right" type="form-control" name="emrContactPhone" [(ngModel)]="employee.emrContactPhone" />  </p>
-                <p>የተጠሪው ኢሜል:  &nbsp; <input class="float-right" type="form-control" name="emrContactEmail" [(ngModel)]="employee.emrContactEmail" /></p>
-                
-                <label for="Note">ማስታወሻ:</label>
-                <textarea class="float-right" id="Note" cols="22" rows="5" name="note"  [(ngModel)]="employee.note" [(ngModel)]="employee.extraInfo"></textarea>
-                        
-                </div>
+        <div class="col-4">
+          <p class="text-center text-primary">ተያዥ/የአደጋ ጊዜ ተጠሪ</p>
+          <p>
+            የተጠሪው ስም: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="emrContactName"
+              [(ngModel)]="employee.emrContactName"
+            />
+          </p>
+          <p>
+            የተጠሪው አድራሻ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="emrContactAddress"
+              [(ngModel)]="employee.emrContactAddress"
+            />
+          </p>
+          <p>
+            የተጠሪው ስልክ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="emrContactPhone"
+              [(ngModel)]="employee.emrContactPhone"
+            />
+          </p>
+          <p>
+            የተጠሪው ኢሜል: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="emrContactEmail"
+              [(ngModel)]="employee.emrContactEmail"
+            />
+          </p>
 
-                <div class="col-4" >
-                <p class="text-center text-primary" >ለክፍያ ገጽ ተጠቃሚወች</p>
-                <p>ባንክ ስም :  &nbsp; <input class="float-right" type="form-control" name="bankName" [(ngModel)]="employee.bankName" /> </p> 
-                <p>ባንክ ቅርንጫፍ:  &nbsp; <input class="float-right" type="form-control" name="bankBranch" [(ngModel)]="employee.bankBranch" /></p>
-                <p>ባንክ ቁጥር:  &nbsp; <input class="float-right" type="form-control" name="bankAccountNumber" [(ngModel)]="employee.bankAccountNumber" />  </p>
-                <p>የቅጥር አይነት  &nbsp; <input class="float-right" type="form-control" name="employementType" [(ngModel)]="employee.employementType" /></p>
-                <p>ደሞዝ (ጠቅላላ) :  &nbsp; <input class="float-right" type="form-control" name="grossPayment" [(ngModel)]="employee.grossPayment" placeholder="gross salary" /></p>
-                <p>ግብር : 
-                     <button class="btn btn-md btn-outline-primary mr-2 float-right " (click)="isAbsent()">ታክስ ማዘጋጃ</button>
-                </p>
-                <p>ተቆራጭ :  
-                    <button class="btn btn-md btn-outline-primary mr-2 float-right " (click)="isAbsent()">አላዋንስ ማዘጋጃ</button>
-                </p>
-                
-                </div>
+          <label for="Note">ማስታወሻ:</label>
+          <textarea
+            class="float-right"
+            id="Note"
+            cols="22"
+            rows="5"
+            name="note"
+            [(ngModel)]="employee.note"
+            [(ngModel)]="employee.extraInfo"
+          ></textarea>
         </div>
-       
-                   
-                        <div class="">
-                        <button style=" margin: 10px 10px; width: 100px; height: 50;" type="submit" class="btn btn-primary" [class.btn-warning]="editing">
-                                        {{editing ? "Save" : "Create"}}
-                                        </button>
-                        <button style=" margin: 10px 10px; width: 100px; height: 50;" type="reset" class="btn btn-secondary" routerLink="/employees">
-                                Cancel
-                        </button>
-                        </div>
-               
 
-</form>
-</div>
+        <div class="col-4">
+          <p class="text-center text-primary">ለክፍያ ገጽ ተጠቃሚወች</p>
+          <p>
+            ባንክ ስም : &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="bankName"
+              [(ngModel)]="employee.bankName"
+            />
+          </p>
+          <p>
+            ባንክ ቅርንጫፍ: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="bankBranch"
+              [(ngModel)]="employee.bankBranch"
+            />
+          </p>
+          <p>
+            ባንክ ቁጥር: &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="bankAccountNumber"
+              [(ngModel)]="employee.bankAccountNumber"
+            />
+          </p>
+          <p>
+            የቅጥር አይነት &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="employementType"
+              [(ngModel)]="employee.employementType"
+            />
+          </p>
+          <p>
+            ደሞዝ (ጠቅላላ) : &nbsp;
+            <input
+              class="float-right"
+              type="form-control"
+              name="grossPayment"
+              [(ngModel)]="employee.grossPayment"
+              placeholder="gross salary"
+            />
+          </p>
+          <p>
+            ግብር :
+            <button
+              class="btn btn-md btn-outline-primary mr-2 float-right "
+              (click)="isAbsent()"
+            >
+              ታክስ ማዘጋጃ
+            </button>
+          </p>
+          <p>
+            ተቆራጭ :
+            <button
+              class="btn btn-md btn-outline-primary mr-2 float-right "
+              (click)="isAbsent()"
+            >
+              አላዋንስ ማዘጋጃ
+            </button>
+          </p>
+        </div>
+      </div>
+
+      <div class="">
+        <button
+          style=" margin: 10px 10px; width: 100px; height: 50;"
+          type="submit"
+          class="btn btn-primary"
+          [class.btn-warning]="editing"
+        >
+          {{ editing ? "Save" : "Create" }}
+        </button>
+        <button
+          style=" margin: 10px 10px; width: 100px; height: 50;"
+          type="reset"
+          class="btn btn-secondary"
+          routerLink="/employees"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

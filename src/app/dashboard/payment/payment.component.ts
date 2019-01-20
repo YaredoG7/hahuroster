@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import {Salary} from '../../model/salary.model'; 
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Salary } from '../../model/salary.model';
+import {SalaryRepository} from '../../model/salary.repository'; 
 
 @Component({
   selector: 'app-payment',
@@ -8,34 +9,31 @@ import {Salary} from '../../model/salary.model';
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-
-
-
-  constructor(private modalService: NgbModal) { }
-
-  ngOnInit() {
- 
-  }
-
-   // save slaries
-   saveSlary(s: Salary){
-
- }
-
-  getSlary(){
-
-  }
- 
-  
-  getEmployees(){}
-
-  // modal handler 
-
   closeResult: string;
+  salary: Salary; 
+  constructor(private modalService: NgbModal, private repository: SalaryRepository) {}
 
+  ngOnInit() {}
+
+  // get salaries 
+  getSalaries(): Salary[]{
+  return this.repository.getSalaries();
+  }
+
+   
+  // save salary
+  saveSalary(salary: Salary){
+    salary = new Salary("newEmp", 5000, 200, 100, [{reason: "absent days", amount: 150, qty: 5}], [{reason: "over time", amount: 500, qty:2}], 400, 4000);
+    console.log(salary);
+    this.repository.saveSalary(salary); 
+  }
+
+  getEmployees() {}
+
+  // modal handler
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         result => {
           this.closeResult = `Closed with: ${result}`;
@@ -48,16 +46,16 @@ export class PaymentComponent implements OnInit {
   }
 
   isAnswerProvided() {
-   // console.log(this.disabled);
+    // console.log(this.disabled);
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       console.log(reason);
-      return "by pressing ESC";
+      return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       console.log(reason);
-      return "by clicking on a backdrop";
+      return 'by clicking on a backdrop';
     } else {
       console.log(reason);
       return `with: ${reason}`;

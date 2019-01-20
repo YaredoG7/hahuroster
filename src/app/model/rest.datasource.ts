@@ -1,10 +1,11 @@
 import {Injectable} from "@angular/core"; 
 import {HttpClient} from "@angular/common/http"; 
-import {Observable} from "rxjs"; 
+import {Observable, throwError } from "rxjs"; 
 import {Employee} from "./employee.model";  
 import {TimeTrack} from "./timeTrack.model"; 
-import {map} from "rxjs/operators";
-import {HttpHeaders} from "@angular/common/http";
+import {map, catchError, retry} from "rxjs/operators";
+import {HttpHeaders, HttpResponse, HttpErrorResponse} from "@angular/common/http";
+import {Salary} from "./salary.model"; 
 
 const PROTOCOL = "http";
 const PORT = 3500; 
@@ -15,18 +16,16 @@ export class RestDataSource{
     auth_token: string; 
 
     constructor(private http: HttpClient){
-        this.baseUrl = "http://localhost:3000/";
+      //  this.baseUrl = "http://localhost:300/";
 
-        
+      this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;        
     }
 
-    getEmployees(): Observable<Employee[]>{
-        return this.http.get<Employee[]>(this.baseUrl + "employees");
+    getEmployees(): Observable<HttpResponse<Employee[]>>{
+        return this.http.get<Employee[]>(this.baseUrl + "employees", { observe: 'response' })
+                        .pipe(catchError(this.handleError));
     }
-
-    // save the order ==> to be implemented in other sense here 
-
-
+    
     authenticate(user: string, pass: string): Observable<boolean>{
 
         return this.http.post<any>(this.baseUrl + "login", {
@@ -39,17 +38,18 @@ export class RestDataSource{
        
     }
 
-    saveEmployee(employee: Employee): Observable<Employee>{
+    saveEmployee(employee: Employee): Observable<HttpResponse<Employee>>{
 
-        return this.http.post<Employee>(this.baseUrl + "employees", employee, this.getOptions()); 
+        return this.http.post<Employee>(this.baseUrl + "employees", employee, { observe: 'response' })
+                        .pipe(catchError(this.handleError)); 
     }
 
-    updateEmployee(employee): Observable<Employee>{
-        return this.http.put<Employee>(`${this.baseUrl}employees/${employee.id}` , employee, this.getOptions())
+    updateEmployee(employee): Observable<HttpResponse<Employee>>{
+        return this.http.put<Employee>(`${this.baseUrl}employees/${employee.id}` , employee, { observe: 'response' })
     }
 
-    deleteEmployee(id:number): Observable<Employee>{
-        return this.http.delete<Employee>(`${this.baseUrl}employees/${id}` , this.getOptions())
+    deleteEmployee(id:number): Observable<HttpResponse<Employee>>{
+        return this.http.delete<Employee>(`${this.baseUrl}employees/${id}` , { observe: 'response' })
     }
 
 
@@ -99,6 +99,20 @@ export class RestDataSource{
     return this.http.delete<Employee>(`${this.baseUrl}timetrack/${id}` , this.getOptions())
 }
 
+
+// get the salary items
+
+getSalaries(): Observable<Salary[]>{
+   return this.http.get<Salary[]>(this.baseUrl + "salaries");
+}
+
+// save new salary details
+
+saveSalary(salary: Salary): Observable<Salary>{
+    console.log("I got " + salary.empId); 
+    return this.http.post<Salary>(this.baseUrl + "salaries", salary);
+}
+
    // for authentication purpose
     private getOptions(){
         return {
@@ -107,4 +121,26 @@ export class RestDataSource{
             }) 
         }
     }
+
+  // handle error message 
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+    //  this.notificationService.error('An error occurred:' + error.error.message); 
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+     // this.notificationService.error('Server returned an unsuccessful response code:' + error.status)
+     console.error(
+       `Backend returned code ${error.status}, ` +
+      `body was: ${error.message}`);
+      
+    }
+    // return an observable with a user-facing error message
+    return throwError(
+        'Server came back with error! Code: ' + error.status + ' '+ error.statusText);
+  };
+
 }

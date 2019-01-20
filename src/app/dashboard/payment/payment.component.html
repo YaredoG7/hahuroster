@@ -1,214 +1,287 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col bg-transparent text-dark text-center">
-           <a class="navbar-brand"><h5>የክፍያ ሂሳብ መስሪያ እና መቆጣጠሪያ</h5></a>
+  <div class="row">
+    <div class="col bg-transparent text-dark text-center">
+      <a class="navbar-brand"><h5>የክፍያ ሂሳብ መስሪያ እና መቆጣጠሪያ</h5></a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <p>
+        መለያ ቁጥር: &nbsp;
+        <input
+          type="form-control"
+          placeholder="የሰራተኛውን መለያ ያስገቡ"
+          name="empId"
+          #empID
+        />
+        <button
+          style="margin: 0px 30px"
+          class="btn btn-sm bg-success text-white"
+          (click)="searchEmp(empID.value)"
+        >
+          <i class="fa fa-search fa-x">&nbsp; &nbsp; ፈልግ</i>
+        </button>
+      </p>
+
+      <h2 *ngFor="let sal of getSalaries()"><i class="fa fa-user-circle fa-x"></i> {{sal.empId}}</h2>
+      <hr />
+      <div class=" row">
+        <div class="col-5 salryInput">
+          <!-- Adding the 6th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent"> ክፍያ:</span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              value="20000"
+            />
+          </div>
+
+          <!-- Adding the 7th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent"> ግብር:</span>
+            </div>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+              <option selected>Non-Taxable</option>
+              <option value="1">10%</option>
+              <option value="2">15%</option>
+              <option value="3">20%</option>
+              <option value="3">25%</option>
+              <option value="3">30%</option>
+              <option value="3">35%</option>
+            </select>
+          </div>
+
+          <!-- Adding the 6th employee attribute -->
+          <div class=" input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent"> ጡረታ:</span>
+            </div>
+            <input
+              type="text"
+              readonly
+              class="form-control bg-white"
+              value="7%"
+            />
+          </div>
+          <hr />
+          <h5>
+            ተጨማሪ:
+            <span>
+              <button
+                class="btn btn-success float-right"
+                (click)="openVerticallyCentered(content)"
+              >
+                +
+              </button>
+            </span>
+          </h5>
+          <br />
+          <div class="showTable">
+            <table class="table table-sm table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>ምክያት</th>
+                  <th>ፐርሰንት</th>
+                  <th>የተጣራ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
+
+                <tr>
+                  <td>Overtime</td>
+                  <td>20%</td>
+                  <td>700</td>
+                </tr>
+                <tr>
+                  <td>Overtime</td>
+                  <td>20%</td>
+                  <td>700</td>
+                </tr>
+                <tr>
+                  <td>Overtime</td>
+                  <td>20%</td>
+                  <td>700</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <br />
+
+            <button
+              class="btn btn-success float-left"
+              (click)="saveSalary()"
+            >
+              Send ስሌት
+            </button>
+            <br />
+            <br />
+            <hr />
+            <h6>አጠቃላይ ተጨማሪ:</h6>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5">
+          <h5>
+            ተቀናሽ:
+            <span>
+              <button
+                class="btn btn-danger float-right"
+                (click)="openVerticallyCentered(content)"
+              >
+                -
+              </button>
+            </span>
+          </h5>
+          <br />
+          <div class="showTable">
+            <table class="table table-sm table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>ምክያት</th>
+                  <th>ፐርሰንት</th>
+                  <th>የተጣራ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
+
+                <tr>
+                  <td>Overtime</td>
+                  <td>20%</td>
+                  <td>700</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="float-left">ቀሪ ቀናቶች</h5>
+            <br />
+            <hr />
+
+            <div class="row">
+              <div class="col-6">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">ከቀን</span>
+                  </div>
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">እስከ</span>
+                  </div>
+                  <input
+                    type="date"
+                    class="form-control"
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+              </div>
+              <div class="col-6">
+                <ul class="list-group border-success">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    የቀሪ ቀናት ብዛት
+                    <span class="badge badge-danger badge-pill">14</span>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    የሰዓታት ብዛት
+                    <span class="badge badge-danger badge-pill">2</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">ቅጣት/ቀን</span>
+                </div>
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="ተቀናሽ ብር መጠን ለ1 ቀን ቀሪ"
+                />
+              </div>
+              <button
+                class="btn btn-success float-right"
+                (click)="calculateDeduction()"
+              >
+                ስሌት
+              </button>
+            </div>
+          </div>
+
+          <br />
+          <hr />
+          <h6>አጠቃላይ ተቀናሽ:</h6>
+          <br />
+          <h5>የተጣራ ወርሃዊ ክፍያ:</h5>
         </div>
       </div>
-
-    <div class="row">
-    <div class="col-12">
-            
-        <p>መለያ ቁጥር:  &nbsp; <input type="form-control" placeholder="የሰራተኛውን መለያ ያስገቡ" name="empId" #empID/>
-         <button style="margin: 0px 30px" class="btn btn-sm bg-success text-white" (click)="searchEmp(empID.value)">
-            <i class="fa fa-search fa-x">&nbsp; &nbsp; ፈልግ</i></button>
-        </p>
-               
-   <h2><i class="fa fa-user-circle fa-x"></i> Abebe Kebede</h2>
-   <hr>
-   <div class=" row">
-   <div class="col-5 salryInput">
-
-        <!-- Adding the 6th employee attribute -->
-        <div class=" input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-transparent"> 
-                             ክፍያ:</span>
-                </div>
-        <input type="text" readonly class="form-control bg-white" value="20000" >
-        </div>
-
-        <!-- Adding the 7th employee attribute -->
-        <div class=" input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-transparent"> 
-                            ግብር:</span>
-                </div>
-                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                  <option selected>Non-Taxable</option>
-                  <option value="1">10%</option>
-                  <option value="2">15%</option>
-                  <option value="3">20%</option>
-                  <option value="3">25%</option>
-                  <option value="3">30%</option>
-                  <option value="3">35%</option>
-                </select>
-        </div>
-
-               <!-- Adding the 6th employee attribute -->
-               <div class=" input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-transparent"> 
-                        ጡረታ:</span>
-                </div>
-              <input type="text" readonly class="form-control bg-white" value="7%" >
-              </div>
-              <hr>
-     <h5>ተጨማሪ: <span>
-        <button class="btn btn-success float-right" (click)="openVerticallyCentered(content)">
-            +
-             </button>
-     </span></h5> <br>
-        <div class="showTable">
-
-              <table class="table table-sm table-striped table-hover">
-                      <thead>
-                          <tr>
-                              <th>ምክያት</th><th> ፐርሰንት </th><th>የተጣራ</th>
-                          </tr>
-                      </thead>
-                      <tbody >
-                          <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
-
-                          <tr >
-                          <td >Overtime</td>
-                          <td >20%</td>
-                          <td >700</td>
-                          </tr>
-                          <tr>
-                                <td >Overtime</td>
-                                <td >20%</td>
-                                <td >700</td>
-                          </tr>
-                          <tr>
-                                <td >Overtime</td>
-                                <td >20%</td>
-                                <td >700</td>
-                          </tr>
-
-                      </table>
-                      <br>
-
-                      <button class="btn btn-success float-left" (click)="calculateAddition()">
-                            ስሌት
-                         </button>
-                         <br>
-                <br>
-                <hr>
-        <h6>አጠቃላይ ተጨማሪ: </h6>
-        </div>
-    
     </div>
-    <div class="col-1">
-
-    </div>
-    <div class="col-5">
-            <h5>ተቀናሽ: <span>
-                    <button class="btn btn-danger float-right" (click)="openVerticallyCentered(content)">
-                        -
-                         </button>
-                 </span></h5> <br>
-                 <div class="showTable">
-            
-                          <table class="table table-sm table-striped table-hover">
-                                  <thead>
-                                      <tr>
-                                          <th>ምክያት</th><th> ፐርሰንት </th><th>የተጣራ</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody >
-                                      <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
-            
-                                      <tr >
-                                      <td >Overtime</td>
-                                      <td >20%</td>
-                                      <td >700</td>
-                                      </tr>
-                                  </tbody>
-                                  </table>
-
-                                  
-                                  <h5 class="float-left">ቀሪ ቀናቶች</h5>    <br> <hr>
-                                     
-                <div class="row">
-   
-                   <div class="col-6">   
-                        <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">ከቀን</span>
-                                </div>
-                                <input type="datetime-local" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                              </div>
-                              <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1">እስከ</span>
-                                    </div>
-                                    <input type="date" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                                  </div>
-                    </div>
-                   <div class="col-6">
-                        <ul class="list-group border-success">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    የቀሪ ቀናት ብዛት
-                                  <span class="badge badge-danger badge-pill">14</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        የሰዓታት ብዛት
-                                  <span class="badge badge-danger badge-pill">2</span>
-                                </li>
-                              </ul>
-
-                </div>
-
-                <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">ቅጣት/ቀን</span>
-                        </div>
-                        <input type="number" class="form-control" placeholder="ተቀናሽ ብር መጠን ለ1 ቀን ቀሪ">
-                 </div>
-                 <button class="btn btn-success float-right" (click)="calculateDeduction()">
-                  ስሌት
-               </button>
-            </div>    
-               
-        </div>
-
-        <br>
-         <hr>
-   <h6>አጠቃላይ ተቀናሽ: </h6>
-   <br>
-   <h5>የተጣራ ወርሃዊ ክፍያ:</h5>
-    </div>
-    
-    
-   </div>
-    </div>
-    </div>
-    <br>
-    <br>
+  </div>
+  <br />
+  <br />
 </div>
-
 
 <!-- Modal content -->
 <ng-template #content let-modal>
-        <div class="modal-header bg-dark text-white">
-          <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span class="text-danger" aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body bg-white text-dark">
-               
-                <p>ምክያት :  &nbsp; <input class="float-right" type="form-control" name="mobilePhone" />  </p>
-                <p>ፐርሰንት :  &nbsp; <input class="float-right" type="number" name="address"  /></p>
-                <p>ስሌት :  &nbsp; <input class="float-right" type="number" name="emailAddress"  /></p>
-              
-    
-        </div>
-        <div class="modal-footer warning ">
-          <button type="submit" class="btn text-white bg-success" (click)="saveSlary(newSalary)" >መዝግብ</button>
-          <button type="button" class="btn text-white bg-danger" (click)="modal.close('Cancel click')">ተመለስ</button>
-        </div>
-      </ng-template>
-      
+  <div class="modal-header bg-dark text-white">
+    <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span class="text-danger" aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-white text-dark">
+    <p>
+      ምክያት : &nbsp;
+      <input class="float-right" type="form-control" name="mobilePhone" />
+    </p>
+    <p>
+      ፐርሰንት : &nbsp; <input class="float-right" type="number" name="address" />
+    </p>
+    <p>
+      ስሌት : &nbsp;
+      <input class="float-right" type="number" name="emailAddress" />
+    </p>
+  </div>
+  <div class="modal-footer warning ">
+    <button
+      type="submit"
+      class="btn text-white bg-success"
+      (click)="saveSlary(newSalary)"
+    >
+      መዝግብ
+    </button>
+    <button
+      type="button"
+      class="btn text-white bg-danger"
+      (click)="modal.close('Cancel click')"
+    >
+      ተመለስ
+    </button>
+  </div>
+</ng-template>
 
-    <!-- End of modal content  -->
+<!-- End of modal content  -->
