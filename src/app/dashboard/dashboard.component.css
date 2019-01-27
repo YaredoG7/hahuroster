@@ -16,8 +16,6 @@
     display: block;
 }
 
-
-#sidebar ul li.active > a, a[aria-expanded="true"]{
-    color: #fff; 
-    background: #00ace6;
+#sidebar ul li a.active button{
+    background: #00c73c;
 }

@@ -5,226 +5,240 @@
     </div>
   </div>
 
-  <div class="row mt-2">
-    <div class="col-1"></div>
-    <div class="col-6">
-      <div class="card bg-dark border-info mb-3">
-        <div
-          class="card-header border-info bg-transparent text-white"
-          style="height: 60px;"
-        >
-          <p>
-            መለያ ቁጥር: &nbsp;
-            <input
-              type="form-control"
-              placeholder="የሰራተኛውን መለያ ያስገቡ"
-              name="empId"
-              #empID
-            />
-            <button
-              class="btn btn-sm bg-success mr-2 float-right text-white"
-              (click)="searchEmp(empID.value)"
-            >
-              <i class="fa fa-search fa-x">&nbsp; &nbsp; ፈልግ</i>
-            </button>
-          </p>
-        </div>
-        <div class="card-body text-dark ">
+  <div class="row">
+      <div class="col-12">
+        <p>
+          መለያ ቁጥር: &nbsp;
+          <input
+            type="form-control"
+            placeholder="የሰራተኛውን መለያ ያስገቡ"
+            name="empId"
+            #empID
+          />
+          <button
+            style="margin: 0px 30px"
+            class="btn btn-sm bg-success text-white"
+            (click)="searchEmp(empID.value)"
+          >
+            <i class="fa fa-search fa-x">&nbsp; &nbsp; ፈልግ</i>
+          </button>
+        </p>
+  
+        <h2 ><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2>
+        <hr />
+        <div class=" row">
+          <div class="col-5 salryInput">
+         <div class="card card-body bg-info">
           <!-- Adding the details of the selected employee -->
           <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-user fa-x"></i
-              ></span>
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-user fa-x"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                readonly
+                class="form-control bg-white"
+                placeholder="ሙሉ ስም"
+                [(ngModel)]="employee.fullName"
+              />
             </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ሙሉ ስም"
-              [(ngModel)]="employee.fullName"
-            />
-          </div>
-
-          <!-- Adding the third employee attribute -->
-          <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-phone-square fa-x"></i
-              ></span>
+  
+            <!-- Adding the third employee attribute -->
+            <div class=" input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-phone-square fa-x"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                readonly
+                class="form-control bg-white"
+                placeholder="ሞባይል ስልክ"
+                [(ngModel)]="employee.mobilePhone"
+              />
             </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ሞባይል ስልክ"
-              [(ngModel)]="employee.mobilePhone"
-            />
-          </div>
-
-          <!-- Adding the 4th employee attribute -->
-          <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-briefcase fa-x"></i
-              ></span>
+  
+            <!-- Adding the 4th employee attribute -->
+            <div class=" input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-briefcase fa-x"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                readonly
+                class="form-control bg-white"
+                placeholder="ስራ ሀላፊነት"
+                [(ngModel)]="employee.position"
+              />
             </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ስራ ሀላፊነት"
-              [(ngModel)]="employee.position"
-            />
-          </div>
+          </div>  
+            <hr />
+            <h5>
+            <i class="fa fa-calendar text-dark">ቀን ማስገቢያ:</i>
+            
+            </h5>
+            <form novalidate #form="ngForm">
+            
+                <ul class="text-danger list-unstyled" *ngIf="formSubmitted && form.invalid">  
+                    <li> እባክዎ ዓመት, ወር, ቀን (ቁጥር ብቻ) ያስገቡ</li>
+                    <li>ዓመት ባለ 4 ወር እና ቀን ባለ 2 ቁጥር ቁጥር መሆን አለበት</li>
+                    
+                </ul>
+                <ul class="text-danger list-unstyled">  
+                    <li  *ngIf="monthFlow" > ወር ከ 12 መበለጥ የለበትም</li>
+                    <li  *ngIf="dayFlow" >  ቀን ከ 30 መበለጥ የለበትም</li>
+                   
+                </ul>
          
-          <h6><i class="fa fa-calendar text-white"> ቀን ማስገቢያ</i></h6>
-          <div class="row">
-           
-            <div class=" col-4 input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text text-danger" id="basic-addon1"
-                  >ዓ/ም</span
-                >
-              </div>
-              <input type="number" class="form-control" placeholder="ዓ/ም" #year required minlength="4" maxlength="4" />
-              <ul class="text-danger list-unstyled" *ngIf="year.dirty && year.invalid">  
-                  <li *ngIf="year.errors.required">You must enter a product name</li>
-                  <li *ngIf="year.errors.minlength">Product names must be at least 4 characters</li>
-              </ul>
-            </div>
-            <div class=" col-4 input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text text-danger" id="basic-addon1"
-                  >ወር</span
-                >
-              </div>
-              <input type="number" class="form-control" placeholder="ወር"/>
-            </div>
-            <div class=" col-4 input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text text-danger" id="basic-addon1"
-                  >ቀን</span
-                >
-              </div>
-              <input type="number" class="form-control" placeholder="ቀን" />
-            </div>
-        
-            <div class="col-4 input-group mb-3" style="height:110px">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <input
-                    [(ngModel)]="disabled"
-                    (change)="isAnswerProvided($event)"
-                    type="checkbox"
-                    aria-label="Checkbox for following text input"
-                  />
-                  &nbsp;ሰዓት
+               <div class="input-group p-2">
+                  <div class="input-group-prepend">
+                  </div>
+                  <input 
+                          class="form-control" 
+                          placeholder="ዓ/ም"
+                          type="form-control"
+                          name="dateYear" 
+                          #year="ngModel" 
+                          required minlength="4" 
+                          maxlength="4"
+                          pattern="^[0-9]+$"
+                          [(ngModel)]="dateYear">
+                  <input type="form-control"
+                          class="form-control"
+                          placeholder="ወር"
+                          name="dateMonth"
+                          #month="ngModel" 
+                          required minlength="2" 
+                          maxlength="2"
+                          pattern="^[0-9]+$"
+                          (mouseleave)="check()"
+                          [(ngModel)]="dateMonth">
+                  <input class="form-control"
+                         placeholder="ቀን"
+                          name="dateDay"
+                          #day="ngModel" 
+                          (mouseleave)="checkTwo()"
+                          required minlength="2" 
+                          maxlength="2"
+                          pattern="^[0-9]+$"
+                          [(ngModel)]="dateDay">
                 </div>
-              </div>
-              <ngb-timepicker
-                [(ngModel)]="time"
-                [disabled]="!disabled"
-              ></ngb-timepicker>
-            </div>
+                <!-- <ngb-datepicker #d></ngb-datepicker> -->
+            </form>
+            <h5 class="pt-3">
+                <i class="fa fa-calendar text-dark ">ሰዓት ማስገቢያ:</i>
+                <span>
+                    <button class="btn btn-success float-right">
+                 
+                    <input class="float-right"
+                    [(ngModel)]="disabled"
+                      (change)="isAnswerProvided($event)"
+                      type="checkbox"
+                      aria-label="Checkbox for following text input"
+                      
+                    />
+                  </button>
+                </span>
+            </h5>
+            
+                <ngb-timepicker
+                  [(ngModel)]="time"
+                  [disabled]="!disabled"
+                ></ngb-timepicker>
+
+            <br />
+
+          </div>
+          <div class="col-1"></div>
+          <div class="col-5">
+                  <div class="card text-dark border-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header text-white bg-info">የተመዘገበ</div>
+                    <div class="card-body">
+                      <ul class="list-group border-success">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          የቀሪ ቀናት ብዛት <span class="badge badge-danger badge-pill">7</span>
+                        </li>
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          ያሉት የእረፍት ቀናት <span class="badge badge-danger badge-pill">2</span>
+                        </li>
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          በህመም የወጡ ቀናት <span class="badge badge-danger badge-pill">3</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card text-dark border-dark  mb-3" style="max-width: 18rem;">
+                    <div class="card-header text-white bg-info">ለመጨረሻ ጊዜ የተመዘገበ</div>
+                    <div class="card-body">
+                      <ul class="list-group border-success">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          ቀሪ ቀን <span class="badge badge-dark ">2011-04-20</span>
+                        </li>
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          የእረፍት ቀን <span class="badge badge-dark ">2011-02-15</span>
+                        </li>
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          የህመም ቀን <span class="badge badge-dark ">2011-01-20</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+               
           </div>
         </div>
-      </div>
-      <div class="card-footer bg-transparent border-dark">
+        <hr>
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button
-            class="btn btn-sm btn-outline-primary mr-2"
-            (click)="openVerticallyCentered(content)"
-          >
-            ቀሪ መዝግብ
-          </button>
-          <button
-            class="btn btn-sm btn-outline-primary mr-2"
-            (click)="insertHoliday()"
-          >
-            ሰዓት መዝግብ
-          </button>
-          <button
-            class="btn btn-sm btn-outline-primary mr-2"
-            (click)="overTime()"
-          >
-            ቀሪ (በህመም)
-          </button>
-          <button
-            class="btn btn-sm btn-outline-primary mr-2"
-            (click)="dp.navigateTo()"
-          >
-            የእረፍት ፈቃድ
-          </button>
-          <button
-            class="btn btn-sm btn-outline-primary mr-2"
-            (click)="dp.navigateTo({ year: 2013, month: 2 })"
-          >
-            ቀዳሚ ገጵ
-          </button>
-        </div>
+            <button
+              class="btn btn-sm btn-outline-primary mr-2"
+              (click)="openVerticallyCentered(content)"
+             
+            >
+              ቀሪ መዝግብ
+            </button>
+            <button
+              class="btn btn-sm btn-outline-primary mr-2"
+              (click)="isAbsent(form)"
+            >
+              ሰዓት መዝግብ
+            </button>
+            <button
+              class="btn btn-sm btn-outline-primary mr-2"
+              (click)="overTime()"
+            >
+              ቀሪ (በህመም)
+            </button>
+            <button
+              class="btn btn-sm btn-outline-primary mr-2"
+              (click)="dp.navigateTo()"
+            >
+              የእረፍት ፈቃድ
+            </button>
+            <button
+              class="btn btn-sm btn-outline-primary mr-2"
+              (click)="dp.navigateTo({ year: 2013, month: 2 })"
+            >
+              ቀዳሚ ገጵ
+            </button>
+          </div>
       </div>
     </div>
-    <div class="col-1"></div>
-    <div class="col-4">
-      <div class="card text-dark border-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header text-white bg-info">የተመዘገበ</div>
-        <div class="card-body">
-          <!--  
-          <h5 class="card-title">የቀሪ ቀናት ብዛት: <span class="badge badge-danger">New</span></h5>
-          <h5 class="card-title">ያሉት የእረፍት ቀናት: <span class="badge badge-danger">New</span></h5>
-          <h5 class="card-title">በህመም የወጡ ቀናት: <span class="badge badge-danger">New</span></h5>
-         -->
-
-          <ul class="list-group border-success">
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              የቀሪ ቀናት ብዛት <span class="badge badge-danger badge-pill">14</span>
-            </li>
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              ያሉት የእረፍት ቀናት <span class="badge badge-danger badge-pill">2</span>
-            </li>
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              በህመም የወጡ ቀናት <span class="badge badge-danger badge-pill">1</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="card text-dark border-dark  mb-3" style="max-width: 18rem;">
-        <div class="card-header text-white bg-info">ለመጨረሻ ጊዜ የተመዘገበ</div>
-        <div class="card-body">
-          <ul class="list-group border-success">
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              ቀሪ ቀን <span class="badge badge-dark ">2011-01-20</span>
-            </li>
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              የእረፍት ቀን <span class="badge badge-dark ">2011-01-20</span>
-            </li>
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              የህመም ቀን <span class="badge badge-dark ">2011-01-20</span>
-            </li>
-          </ul>
-
-          <!-- 
-          <h5 class="card-title">ቀሪ ቀን በ <u class="text-primary">2011-01-12</u> ነበር</h5>
-          <h5 class="card-title">የእረፍት ቀን በ <u class="text-primary">2011-01-12</u> ነበር</h5>
-          <h5 class="card-title">የህመም ቀን በ <u class="text-primary">2011-01-12</u> ነበር</h5>
-          -->
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- Modal content -->
@@ -235,7 +249,6 @@
       type="button"
       class="close"
       aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
     >
       <span class="text-danger" aria-hidden="true">&times;</span>
     </button>
@@ -247,14 +260,14 @@
     <button
       type="button"
       class="btn text-white bg-success"
-      (click)="modal.close('Save click')"
+      (click)="modal.close() && isTrue=true"
     >
       መዝግብ
     </button>
     <button
       type="button"
       class="btn text-white bg-danger"
-      (click)="modal.close('Cancel click')"
+      (click)="modal.close() && isTrue=false"
     >
       ተመለስ
     </button>

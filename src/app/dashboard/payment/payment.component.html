@@ -24,7 +24,7 @@
         </button>
       </p>
 
-      <h2 *ngFor="let sal of getSalaries()"><i class="fa fa-user-circle fa-x"></i> {{sal.empId}}</h2>
+      <h2 *ngFor="let sal of getSalaries()"><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2>
       <hr />
       <div class=" row">
         <div class="col-5 salryInput">
@@ -37,23 +37,23 @@
               type="text"
               readonly
               class="form-control bg-white"
-              value="20000"
+              [(ngModel)]="employee.grossPayment"
             />
           </div>
 
           <!-- Adding the 7th employee attribute -->
           <div class=" input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text bg-transparent"> ግብር:</span>
+              <span class="input-group-text bg-transparent"> ግብር ( % ):</span>
             </div>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Non-Taxable</option>
-              <option value="1">10%</option>
-              <option value="2">15%</option>
-              <option value="3">20%</option>
-              <option value="3">25%</option>
-              <option value="3">30%</option>
-              <option value="3">35%</option>
+            <select class="custom-select mr-sm-2"  [(ngModel)]="taxRate">
+              <option selected >0%</option>
+              <option >10%</option>
+              <option >15%</option>
+              <option >20%</option>
+              <option >25%</option>
+              <option >30%</option>
+              <option >35%</option>
             </select>
           </div>
 
@@ -95,19 +95,19 @@
                 <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
 
                 <tr>
-                  <td>Overtime</td>
-                  <td>20%</td>
-                  <td>700</td>
+                  <td>ኦቨር ታይም</td>
+                  <td>%</td>
+                  <td>500</td>
                 </tr>
                 <tr>
-                  <td>Overtime</td>
-                  <td>20%</td>
-                  <td>700</td>
+                  <td>ቦነስ</td>
+                  <td>%</td>
+                  <td>600</td>
                 </tr>
                 <tr>
-                  <td>Overtime</td>
-                  <td>20%</td>
-                  <td>700</td>
+                  <td>ኮሚሽን</td>
+                  <td>5%</td>
+                  <td>1700</td>
                 </tr>
               </tbody>
             </table>
@@ -118,12 +118,12 @@
               class="btn btn-success float-left"
               (click)="saveSalary()"
             >
-              Send ስሌት
+            ስሌት
             </button>
             <br />
             <br />
             <hr />
-            <h6>አጠቃላይ ተጨማሪ:</h6>
+            <h6>አጠቃላይ ተጨማሪ: 2800 </h6>
           </div>
         </div>
         <div class="col-1"></div>
@@ -153,9 +153,9 @@
                 <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
 
                 <tr>
-                  <td>Overtime</td>
-                  <td>20%</td>
-                  <td>700</td>
+                  <td>ሰርቪስ</td>
+                  <td>%</td>
+                  <td>400</td>
                 </tr>
               </tbody>
             </table>
@@ -171,10 +171,10 @@
                     <span class="input-group-text" id="basic-addon1">ከቀን</span>
                   </div>
                   <input
-                    type="datetime-local"
+                   
                     class="form-control"
-                    placeholder="Username"
-                    aria-label="Username"
+                    placeholder="ቀን"
+                 
                     aria-describedby="basic-addon1"
                   />
                 </div>
@@ -183,10 +183,10 @@
                     <span class="input-group-text" id="basic-addon1">እስከ</span>
                   </div>
                   <input
-                    type="date"
+                    
                     class="form-control"
-                    placeholder="Username"
-                    aria-label="Username"
+                    placeholder="እስከ"
+                  
                     aria-describedby="basic-addon1"
                   />
                 </div>
@@ -197,13 +197,13 @@
                     class="list-group-item d-flex justify-content-between align-items-center"
                   >
                     የቀሪ ቀናት ብዛት
-                    <span class="badge badge-danger badge-pill">14</span>
+                    <span class="badge badge-danger badge-pill">3</span>
                   </li>
                   <li
                     class="list-group-item d-flex justify-content-between align-items-center"
                   >
                     የሰዓታት ብዛት
-                    <span class="badge badge-danger badge-pill">2</span>
+                    <span class="badge badge-danger badge-pill">02:00</span>
                   </li>
                 </ul>
               </div>
@@ -229,9 +229,9 @@
 
           <br />
           <hr />
-          <h6>አጠቃላይ ተቀናሽ:</h6>
+          <h6>አጠቃላይ ተቀናሽ: 2900</h6>
           <br />
-          <h5>የተጣራ ወርሃዊ ክፍያ:</h5>
+          <h5>የተጣራ ወርሃዊ ክፍያ: 8000</h5>
         </div>
       </div>
     </div>
@@ -243,7 +243,7 @@
 <!-- Modal content -->
 <ng-template #content let-modal>
   <div class="modal-header bg-dark text-white">
-    <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
+    <h4 class="modal-title" id="modal-basic-title">ተጨማሪ</h4>
     <button
       type="button"
       class="close"

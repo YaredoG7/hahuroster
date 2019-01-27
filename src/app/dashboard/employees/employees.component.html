@@ -123,7 +123,7 @@
             class="btn btn-sm btn-warning"
             [routerLink]="['/employees/edit', selectedEmployee?.id || display]"
           >
-            Edit
+          ቀይር
           </button>
           <!--  (click)="deleteEmployee(selectedEmployee?.id || display)" -->
           <button
@@ -131,7 +131,7 @@
             (click)="openVerticallyCentered(content)"
            
           >
-            Delete
+          አጥፋ
           </button>
         </div>
       </div>
@@ -141,11 +141,11 @@
         <table class="table table-sm table-striped table-dark table-hover">
           <thead>
             <tr>
-              <th>Emp ID</th>
-              <th>Name</th>
-              <th>Department</th>
-              <th>Phone</th>
-              <th>Address</th>
+              <th>መለያ ቁጥር</th>
+              <th>ሙሉ ስም</th>
+              <th>ዲፓርትመንት</th>
+              <th>ሞባይል ስልክ</th>
+              <th>አድራሻ</th>
             </tr>
           </thead>
           <tbody>
@@ -160,7 +160,7 @@
         </table>
       </div>
       <button class="btn btn-success" routerLink="/employees/create">
-        Create New Employee
+        አዲስ መዝግብ
       </button>
     </div>
   </div>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Salary } from '../../model/salary.model';
 import {SalaryRepository} from '../../model/salary.repository'; 
+import { Employee } from '../../model/employee.model';
+import { EmployeeRepository } from '../../model/employee.repository';
 
 @Component({
   selector: 'app-payment',
@@ -11,9 +13,29 @@ import {SalaryRepository} from '../../model/salary.repository';
 export class PaymentComponent implements OnInit {
   closeResult: string;
   salary: Salary; 
-  constructor(private modalService: NgbModal, private repository: SalaryRepository) {}
+  employee: Employee;
+  taxRate: number; 
+
+
+
+  constructor(private employeeRepo: EmployeeRepository, 
+              private modalService: NgbModal, 
+              private repository: SalaryRepository) {
+                this.employee = new Employee(1);
+                this.taxRate = 0;
+              }
 
   ngOnInit() {}
+
+
+
+  searchEmp(empID: string) {
+    this.employee = this.employeeRepo.getEmployeeByEmpId(empID.trim());
+    console.log(this.taxRate)
+    return this.employee;
+  
+  }
+
 
   // get salaries 
   getSalaries(): Salary[]{

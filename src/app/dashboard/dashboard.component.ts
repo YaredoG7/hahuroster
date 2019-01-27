@@ -52,5 +52,9 @@ export class DashboardComponent implements OnInit {
         this.auth.clear(); 
         this.router.navigateByUrl("/");
     }
+
+    getStyle(){
+      return "bg-success"
+    }
    
 }

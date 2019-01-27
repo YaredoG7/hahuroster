@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {NgbDateStruct,NgbCalendar,NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Employee } from '../../model/employee.model';
 import { TimeTrack } from '../../model/timeTrack.model';
@@ -13,34 +12,27 @@ import {NgForm} from "@angular/forms";
   styleUrls: ['./timetrack.component.css']
 })
 export class TimetrackComponent {
-  model: NgbDateStruct;
-  date: { year: number; month: number; day: number };
-  displayVal: boolean;
   displayMonths = 2;
-  hoveredDate: NgbDate;
   time = { hour: 1, minute: 1 };
-  fromDate: NgbDate;
-  toDate: NgbDate;
-  holidaySelect: boolean;
   disabled: boolean;
   empID = '';
   employee: Employee;
   timetrack: TimeTrack;
+  formSubmitted: boolean = false; 
+  monthFlow: boolean = false; 
+  dayFlow: boolean = false; 
+  dateYear: number;
+  dateMonth: number; 
+  dateDay: number;
+  isTrue: boolean;
 
   constructor(
-    private calendar: NgbCalendar,
     private employeeRepo: EmployeeRepository,
     private timetrackRepo: TimeTrackRepository,
     private modalService: NgbModal
   ) {
-    this.selectToday();
-    this.holidaySelect = false;
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-    this.displayVal = false;
     this.timetrack = new TimeTrack(0);
     this.employee = new Employee(1);
-    console.log(this.empID);
   }
 
   closeResult: string;
@@ -63,6 +55,9 @@ export class TimetrackComponent {
     console.log(this.disabled);
   }
 
+  getSalaries (){
+
+  }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       console.log(reason);
@@ -90,19 +85,19 @@ export class TimetrackComponent {
 
   }
 
-  isAbsent() {
+  isAbsent(form: NgForm) {
+    
+    const date = this.dateYear+'-'+this.dateMonth+'-'+this.dateDay;
     this.timetrack = new TimeTrack(
-      this.employee.id,
-      ' ',
-      '2019-12-12',
-      '2112-21-12',
-      '2100-12-12',
-      2,
-      12,
-      10,
-      15
-    );
-    this.timetrackRepo.saveNewAbsent(this.timetrack);
+      this.employee.id, this.employee.empId, date);
+      this.formSubmitted = true;
+
+    if(form.valid && !this.monthFlow && !this.dayFlow){ 
+      this.timetrackRepo.saveNewAbsent(this.timetrack);
+      this.formSubmitted = false; 
+      this.employee = new Employee(0); 
+      form.reset(); 
+    }
   }
 
   hoursWasted() {
@@ -111,8 +106,9 @@ export class TimetrackComponent {
   }
 
   overTime() {
-    this.timetrack = new TimeTrack(2, '', '', '', '', 0, 0, 10, 30);
-    this.timetrackRepo.overTime(this.timetrack);
+    console.log(this.isTrue);
+   // this.timetrack = new TimeTrack(2, '', '', '', '', 0, 0, 10, 30);
+   // this.timetrackRepo.overTime(this.timetrack);
   }
 
   sickLeave() {
@@ -120,59 +116,29 @@ export class TimetrackComponent {
     this.timetrackRepo.sickLeave(this.timetrack);
   }
 
-  insertHoliday() {
-    this.timetrack = new TimeTrack(5, '', '', '', '2017-12-30');
+  check(){
+    this.monthFlow = false;
+    if (this.dateMonth > 12){
+      this.monthFlow = true;
+    } 
+   
+  }
+  checkTwo(){
+    this.dayFlow = false;
+    if (this.dateDay > 30){
+      this.dayFlow = true;
+    } 
+   
+  }
+
+  insertHoliday(form: NgForm) {
+    this.formSubmitted = true;
+    if(form.valid && !this.monthFlow && !this.dayFlow){
     this.timetrackRepo.insertHoliday(this.timetrack);
-  }
-
-  getDate() {
-    return this.model.year + '-' + this.model.month + '-' + this.model.day;
-  }
-
-  selectToday() {
-    this.model = this.calendar.getToday();
-  }
-
-  setDate(): string {
-    return this.model.year + '-' + this.model.month + '-' + this.model.day;
-  }
-
-  setTime(): string {
-    return this.time.hour + ':' + this.time.minute;
-  }
-
-  onDateSelection(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
-      this.toDate = date;
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
+    console.log(this.dateYear + ' ' + this.dateMonth + ' ' + this.dateDay + ' ' + this.time.minute);
+    console.log(this.isTrue);
+    this.formSubmitted = false;
     }
-  }
-
-  isHovered(date: NgbDate) {
-    return (
-      this.fromDate &&
-      !this.toDate &&
-      this.hoveredDate &&
-      date.after(this.fromDate) &&
-      date.before(this.hoveredDate)
-    );
-  }
-
-  isInside(date: NgbDate) {
-    return date.after(this.fromDate) && date.before(this.toDate);
-  }
-
-  isRange(date: NgbDate) {
-    return (
-      date.equals(this.fromDate) ||
-      date.equals(this.toDate) ||
-      this.isInside(date) ||
-      this.isHovered(date)
-    );
   }
 
   openVerticallyCentered(content) {
