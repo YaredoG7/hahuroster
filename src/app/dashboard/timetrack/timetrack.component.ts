@@ -1,16 +1,45 @@
-import { Component } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Employee } from '../../model/employee.model';
 import { TimeTrack } from '../../model/timeTrack.model';
 import { TimeTrackRepository } from '../../model/timetrack.repository';
 import { EmployeeRepository } from '../../model/employee.repository';
 import {NgForm} from "@angular/forms"; 
+import {
+  NgbCalendar,
+  NgbDate,
+  NgbDatepickerI18n,
+  NgbCalendarPersian,
+  NgbCalendarEthiopian,
+  NgbDateStruct
+} from '@ng-bootstrap/ng-bootstrap';
+
+// const WEEKDAYS  = ["እሑድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሓሙስ", "ዓርብ", "ቅዳሜ"];
+
+const WEEKDAYS  = ["እሑ", "ሰኞ", "ማክ", "ረቡ", "ሓሙ", "ዓር", "ቅዳ"]; 
+const MONTHS  = ["መስከረም", "ጥቅምት", "ኅዳር", "ታህሣሥ", "ጥር", "የካቲት", "መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ", "ሐምሌ", "ነሐሴ",  "ጳጉሜ"];
+
+@Injectable()
+export class NgbDatepickerI18nEth extends NgbDatepickerI18n {
+  getWeekdayShortName(weekday: number) { return WEEKDAYS[weekday - 1]; }
+  getMonthShortName(month: number) { return MONTHS[month - 1]; }
+  getMonthFullName(month: number) { return MONTHS[month - 1]; }
+  getDayAriaLabel(date: NgbDateStruct): string { return `${date.year}-${this.getMonthFullName(date.month)}-${date.day}`; }
+}
+
+
 
 @Component({
   selector: 'app-timetrack',
   templateUrl: './timetrack.component.html',
-  styleUrls: ['./timetrack.component.css']
+  styleUrls: ['./timetrack.component.css'], 
+  providers: [
+    {provide: NgbCalendar, useClass: NgbCalendarPersian},
+    {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nEth}
+  ]
 })
+
+
 export class TimetrackComponent {
   displayMonths = 2;
   time = { hour: 1, minute: 1 };
@@ -25,15 +54,23 @@ export class TimetrackComponent {
   dateMonth: number; 
   dateDay: number;
   isTrue: boolean;
+  model: NgbDateStruct;
+  date: {year: number, month: number};
 
   constructor(
+    private calendar: NgbCalendar,
     private employeeRepo: EmployeeRepository,
     private timetrackRepo: TimeTrackRepository,
-    private modalService: NgbModal
+    private modalService: NgbModal, 
   ) {
     this.timetrack = new TimeTrack(0);
     this.employee = new Employee(1);
+    this.fromDate = calendar.getToday();
+    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+   
   }
+
+
 
   closeResult: string;
 
@@ -49,6 +86,10 @@ export class TimetrackComponent {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );
+  }
+
+  selectToday() {
+    this.model = this.calendar.getToday();
   }
 
   isAnswerProvided() {
@@ -144,4 +185,35 @@ export class TimetrackComponent {
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
+
+
+  /** Calendar display **/
+
+  hoveredDate: NgbDate;
+  fromDate: NgbDate;
+  toDate: NgbDate;
+
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+      this.toDate = date;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+  }
+
+  isHovered(date: NgbDate) {
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  }
+
+  isInside(date: NgbDate) {
+    return date.after(this.fromDate) && date.before(this.toDate);
+  }
+
+  isRange(date: NgbDate) {
+    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
+  }
+
 }

@@ -27,7 +27,7 @@
         <h2 ><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2>
         <hr />
         <div class=" row">
-          <div class="col-5 salryInput">
+          <div class="col-4 salryInput">
          <div class="card card-body bg-info">
           <!-- Adding the details of the selected employee -->
           <div class=" input-group mb-3">
@@ -79,10 +79,10 @@
           </div>  
             <hr />
             <h5>
-            <i class="fa fa-calendar text-dark">ቀን ማስገቢያ:</i>
+            ቀን ማስገቢያ:
             
             </h5>
-            <form novalidate #form="ngForm">
+            <!-- <form novalidate #form="ngForm">
             
                 <ul class="text-danger list-unstyled" *ngIf="formSubmitted && form.invalid">  
                     <li> እባክዎ ዓመት, ወር, ቀን (ቁጥር ብቻ) ያስገቡ</li>
@@ -128,14 +128,26 @@
                           pattern="^[0-9]+$"
                           [(ngModel)]="dateDay">
                 </div>
-                <!-- <ngb-datepicker #d></ngb-datepicker> -->
-            </form>
-            <h5 class="pt-3">
-                <i class="fa fa-calendar text-dark ">ሰዓት ማስገቢያ:</i>
+            </form> -->
+            <form class="form-inline">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="ዓ/ም-ወር-ቀን"
+                           name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar text-dark"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              
+            <h5 class="pt-3 mt-3">
+                ሰዓት ማስገቢያ:
                 <span>
-                    <button class="btn btn-success float-right">
+                    <button class="btn float-left mr-2">
                  
-                    <input class="float-right"
+                    <input class="float-left"
                     [(ngModel)]="disabled"
                       (change)="isAnswerProvided($event)"
                       type="checkbox"
@@ -155,8 +167,29 @@
 
           </div>
           <div class="col-1"></div>
-          <div class="col-5">
-                  <div class="card text-dark border-dark mb-3" style="max-width: 18rem;">
+          <div class="col-7">
+            <div class="row m-3">
+
+                <!-- <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker> -->
+                <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+                  </ngb-datepicker>
+                  
+                  <ng-template #t let-date let-focused="focused">
+                    <span class="custom-day"
+                          [class.focused]="focused"
+                          [class.range]="isRange(date)"
+                          [class.faded]="isHovered(date) || isInside(date)"
+                          (mouseenter)="hoveredDate = date"
+                          (mouseleave)="hoveredDate = null">
+                      {{ date.day }}
+                    </span>
+                  </ng-template>
+                  
+
+
+            </div>
+            <div class="row m-2">
+                  <div class="card text-dark border-dark mb-3 m-2" style="max-width: 18rem;">
                     <div class="card-header text-white bg-info">የተመዘገበ</div>
                     <div class="card-body">
                       <ul class="list-group border-success">
@@ -178,7 +211,7 @@
                       </ul>
                     </div>
                   </div>
-                  <div class="card text-dark border-dark  mb-3" style="max-width: 18rem;">
+                  <div class="card text-dark border-dark  mb-3 m-2" style="max-width: 18rem;">
                     <div class="card-header text-white bg-info">ለመጨረሻ ጊዜ የተመዘገበ</div>
                     <div class="card-body">
                       <ul class="list-group border-success">
@@ -200,7 +233,7 @@
                       </ul>
                     </div>
                   </div>
-               
+                </div>
           </div>
         </div>
         <hr>
@@ -241,6 +274,8 @@
     </div>
 </div>
 
+<!-- <hr/>
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="selectToday()">Select Today</button> -->
 <!-- Modal content -->
 <ng-template #content let-modal>
   <div class="modal-header bg-dark text-white">
