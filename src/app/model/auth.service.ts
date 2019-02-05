@@ -13,7 +13,7 @@ export class AuthService{
     authenticate(username: string, password: string): Observable<boolean>{
         return this.dataSource.authenticate(username, password); 
     }
-
+    
     get authenticated(): boolean{
         return this.dataSource.auth_token != null; 
     }

@@ -1,18 +1,19 @@
-import {Component, Injectable} from '@angular/core';
+import {Component,OnInit, Injectable} from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Employee } from '../../model/employee.model';
 import { TimeTrack } from '../../model/timeTrack.model';
 import { TimeTrackRepository } from '../../model/timetrack.repository';
 import { EmployeeRepository } from '../../model/employee.repository';
+import {NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from "@angular/forms"; 
 import {
   NgbCalendar,
   NgbDate,
   NgbDatepickerI18n,
   NgbCalendarPersian,
-  NgbCalendarEthiopian,
   NgbDateStruct
 } from '@ng-bootstrap/ng-bootstrap';
+
 
 // const WEEKDAYS  = ["እሑድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሓሙስ", "ዓርብ", "ቅዳሜ"];
 
@@ -40,7 +41,9 @@ export class NgbDatepickerI18nEth extends NgbDatepickerI18n {
 })
 
 
-export class TimetrackComponent {
+export class TimetrackComponent implements OnInit {
+
+  private sickTime: string [] = [];
   displayMonths = 2;
   time = { hour: 1, minute: 1 };
   disabled: boolean;
@@ -48,29 +51,56 @@ export class TimetrackComponent {
   employee: Employee;
   timetrack: TimeTrack;
   formSubmitted: boolean = false; 
-  monthFlow: boolean = false; 
-  dayFlow: boolean = false; 
-  dateYear: number;
-  dateMonth: number; 
-  dateDay: number;
-  isTrue: boolean;
   model: NgbDateStruct;
-  date: {year: number, month: number};
+  date: string;
 
   constructor(
     private calendar: NgbCalendar,
     private employeeRepo: EmployeeRepository,
     private timetrackRepo: TimeTrackRepository,
     private modalService: NgbModal, 
+    private config: NgbTimepickerConfig
   ) {
     this.timetrack = new TimeTrack(0);
     this.employee = new Employee(1);
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-   
+    this.config.spinners = false;
+
   }
 
+  ngOnInit() {
 
+   
+    
+  }
+
+  dateSelected(): string{
+    return this.model.year+'-'+this.model.month+'-'+this.model.day;
+  }
+
+  // trying to work with the time element
+
+  getTime(date: string) {
+    
+    // to be used when date filtering is required, probabaly in the reports page ..
+
+   //  date = this.dateSelected().substring(0,6)
+    let val: string [];
+    this.timetrackRepo.getTimeTracks().filter(tm => {
+      val = tm.absentDates.toString().split(',');
+    //this.indexes(tm.absentDates.toString(), "2011-05");
+     })
+     console.log('selected date '+date);
+      for (let i = 0; i < val.length; i++){
+      var found = val[i].match(date); 
+     
+      if (found != null) {
+        console.log(found.input);
+      }
+
+   } 
+  }
 
   closeResult: string;
 
@@ -128,6 +158,7 @@ export class TimetrackComponent {
 
   isAbsent(form: NgForm) {
     
+    /*
     const date = this.dateYear+'-'+this.dateMonth+'-'+this.dateDay;
     this.timetrack = new TimeTrack(
       this.employee.id, this.employee.empId, date);
@@ -139,47 +170,48 @@ export class TimetrackComponent {
       this.employee = new Employee(0); 
       form.reset(); 
     }
+    */
+   this.date = this.model.year + '-'+ this.model.month + '-' + this.model.day
+   this.timetrack = new TimeTrack(this.employee.id, '', '', this.date)
+   this.timetrackRepo.saveNewAbsent(this.timetrack);
+
+
   }
 
   hoursWasted() {
-    this.timetrack = new TimeTrack(5, '', '', '', '', 3, 3);
+
     this.timetrackRepo.hoursWasted(this.timetrack);
   }
 
   overTime() {
-    console.log(this.isTrue);
-   // this.timetrack = new TimeTrack(2, '', '', '', '', 0, 0, 10, 30);
-   // this.timetrackRepo.overTime(this.timetrack);
+  
   }
 
   sickLeave() {
-    this.timetrack = new TimeTrack(2, '', '', '2012-10-30');
+    this.date = this.model.year + '-'+ this.model.month + '-' + this.model.day
+    this.timetrack = new TimeTrack(this.employee.id, '', '', '', this.date)
     this.timetrackRepo.sickLeave(this.timetrack);
   }
 
   check(){
-    this.monthFlow = false;
-    if (this.dateMonth > 12){
-      this.monthFlow = true;
-    } 
+   // this.monthFlow = false;
+   // if (this.dateMonth > 12){
+   //   this.monthFlow = true;
+   // } 
    
   }
   checkTwo(){
-    this.dayFlow = false;
-    if (this.dateDay > 30){
-      this.dayFlow = true;
-    } 
+    // this.dayFlow = false;
+    // if (this.dateDay > 30){
+    //   this.dayFlow = true;
+    // } 
    
   }
 
-  insertHoliday(form: NgForm) {
-    this.formSubmitted = true;
-    if(form.valid && !this.monthFlow && !this.dayFlow){
-    this.timetrackRepo.insertHoliday(this.timetrack);
-    console.log(this.dateYear + ' ' + this.dateMonth + ' ' + this.dateDay + ' ' + this.time.minute);
-    console.log(this.isTrue);
-    this.formSubmitted = false;
-    }
+  insertHoliday() {
+    this.date = this.model.year + '-'+ this.model.month + '-' + this.model.day
+    this.timetrack = new TimeTrack(this.employee.id, '', '', '','',this.date)
+    this.timetrackRepo.insertHoliday(this.timetrack)
   }
 
   openVerticallyCentered(content) {

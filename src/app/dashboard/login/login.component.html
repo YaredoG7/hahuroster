@@ -1,77 +1,83 @@
-<div class="row">
-  <div class="col-6">
-    <div class="bg-secondary p-2 text-center text-white"><h3>ለሰራተኞች</h3></div>
-    <div
-      class="bg-danger mt-2 p-2 texr-center text-white"
-      *ngIf="errorMessage != null"
-    >
-      {{ errorMessage }}
+<div class="landing-page bg-dark">
+  <div class="dummy">
+  
+    <div class="logo">
+    <img class="float-left" src="../../../assets/H.png" alt="">
+    <img class="float-right" src="../../../assets/hahu.png" alt="">
     </div>
-    <div class="p-2">
-      <form novalidate #form="ngForm" (ngSubmit)="authenticate(form)">
-        <div class="form-group">
-          <label>Name</label>
-          <input
-            class="form-control"
-            name="username"
-            [(ngModel)]="username"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input
-            class="form-control"
-            type="password"
-            name="password"
-            [(ngModel)]="password"
-            required
-          />
-        </div>
-        <div class="text-center">
-          <button class="btn btn-warning m-1" routerLink="/">ተመለስ</button>
-          <button class="btn btn-success m-1" type="submit">ቀጥል</button>
-        </div>
-      </form>
-    </div>
+   
   </div>
+  <div id="landing-page">
+    <div class="buttonArrange">
+    
+      <button type="button" class="btn btn-danger  m-3 p-2" (click)="openVerticallyCentered(content, true)"><h3>አስተዳደር</h3></button>
+      <button type="button" class="btn btn-success  m-3 p-2" (click) ="fbAuth()" >ሰራተኞች</button>  
+
+  </div>
+    
+  </div>
+
+<div class="row">
+
+<!-- Login form display -->
+
+
+
+<!-- Modal content -->
+<ng-template #content let-modal>
+    <div class="modal-header bg-info text-white">
+      <h4 class="modal-title" id="modal-basic-title">{{user}}</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span class="text-danger" aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-white text-dark">
+
+        <div class="bg-danger mt-2 p-2 texr-center text-white"  *ngIf="errorMessage != null">
+          {{ errorMessage }}
+       </div>
+
+        <div class="p-2">
+            <form novalidate #form="ngForm" (ngSubmit)="authenticate(form)">
+              <div class="form-group">
+                <label>Name</label>
+                <input
+                  class="form-control"
+                  name="username"
+                  [(ngModel)]="username"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  required
+                />
+              </div> 
+              <div class="text-center">
+               
+                  <button class="btn btn-success m-1" type="submit">ቀጥል</button>
+                  <button class="btn btn-success m-1" *ngIf="!admin"><a href="/oauth/facebook">ቀጥል</a></button>
+                  <button class="btn btn-warning m-1" (click)="modal.dismiss('Cross click')">ተመለስ</button>
+                </div>
+            </form>
+          </div>
+    </div>
+    <div class="modal-footer warning ">
+        
+    </div>
+  </ng-template>
 
   <!-- Log in page for administration  -->
 
-  <div class=" col-6">
-    <div class="bg-secondary p-2 text-center text-white"><h3>ለአስተዳደር</h3></div>
-    <div
-      class="bg-danger mt-2 p-2 texr-center text-white"
-      *ngIf="errorMessage != null"
-    >
-      {{ errorMessage }}
-    </div>
-    <div class="p-2">
-      <form novalidate #form="ngForm" (ngSubmit)="authenticate(form)">
-        <div class="form-group">
-          <label>Name</label>
-          <input
-            class="form-control"
-            name="username"
-            [(ngModel)]="username"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input
-            class="form-control"
-            type="password"
-            name="password"
-            [(ngModel)]="password"
-            required
-          />
-        </div>
-        <div class="text-center">
-          <button class="btn btn-warning m-1" routerLink="/">ተመለስ</button>
-          <button class="btn btn-success m-1" type="submit">ቀጥል</button>
-        </div>
-      </form>
-    </div>
-  </div>
+</div>
 </div>

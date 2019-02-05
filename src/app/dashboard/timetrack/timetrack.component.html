@@ -24,7 +24,7 @@
           </button>
         </p>
   
-        <h2 ><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2>
+        <!-- <h2 ><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2> -->
         <hr />
         <div class=" row">
           <div class="col-4 salryInput">
@@ -129,7 +129,7 @@
                           [(ngModel)]="dateDay">
                 </div>
             </form> -->
-            <form class="form-inline">
+            <form class="form-inline" novalidate #form="ngForm">
                 <div class="form-group">
                   <div class="input-group">
                     <input class="form-control" placeholder="ዓ/ም-ወር-ቀን"
@@ -140,31 +140,61 @@
                   </div>
                 </div>
               </form>
-
-              
-            <h5 class="pt-3 mt-3">
-                ሰዓት ማስገቢያ:
-                <span>
-                    <button class="btn float-left mr-2">
-                 
-                    <input class="float-left"
-                    [(ngModel)]="disabled"
-                      (change)="isAnswerProvided($event)"
-                      type="checkbox"
-                      aria-label="Checkbox for following text input"
-                      
-                    />
-                  </button>
-                </span>
-            </h5>
-            
-                <ngb-timepicker
-                  [(ngModel)]="time"
-                  [disabled]="!disabled"
-                ></ngb-timepicker>
+              <pre> {{date | json}}</pre>
+            <hr>
+            <div class="input-group input-group-sm ">
+                <input class="float-left p-2 m-2"
+                [(ngModel)]="disabled"
+                  (change)="isAnswerProvided($event)"
+                  type="checkbox"
+                  
+                />
+                <div class="input-group-prepend">
+                  <span ><h5>ሰዓት ማስገቢያ:</h5></span>
+                </div>
+                <ngb-timepicker class="ml-3"
+                [(ngModel)]="time"
+                [disabled]="!disabled"
+              ></ngb-timepicker>
+              </div>
 
             <br />
+            <hr>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2"
+                  (click)="openVerticallyCentered(content)"
+                 
+                >
+                  ቀሪ መዝግብ
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2"
+                  (click)="isAbsent(form)"
+                >
+                  ሰዓት መዝግብ
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2"
+                  (click)="sickLeave()"
+                >
+                  ቀሪ (በህመም)
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2"
+                  (click)="getTime()"
+                >
+                  የእረፍት ፈቃድ
+                </button>
 
+                <!-- Handle click when no employee is selected  -->
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2"
+                  (click)="insertHoliday()"
+                >
+                  ቀዳሚ ገጵ
+                </button>
+              </div>
           </div>
           <div class="col-1"></div>
           <div class="col-7">
@@ -236,40 +266,6 @@
                 </div>
           </div>
         </div>
-        <hr>
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <button
-              class="btn btn-sm btn-outline-primary mr-2"
-              (click)="openVerticallyCentered(content)"
-             
-            >
-              ቀሪ መዝግብ
-            </button>
-            <button
-              class="btn btn-sm btn-outline-primary mr-2"
-              (click)="isAbsent(form)"
-            >
-              ሰዓት መዝግብ
-            </button>
-            <button
-              class="btn btn-sm btn-outline-primary mr-2"
-              (click)="overTime()"
-            >
-              ቀሪ (በህመም)
-            </button>
-            <button
-              class="btn btn-sm btn-outline-primary mr-2"
-              (click)="dp.navigateTo()"
-            >
-              የእረፍት ፈቃድ
-            </button>
-            <button
-              class="btn btn-sm btn-outline-primary mr-2"
-              (click)="dp.navigateTo({ year: 2013, month: 2 })"
-            >
-              ቀዳሚ ገጵ
-            </button>
-          </div>
       </div>
     </div>
 </div>

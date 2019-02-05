@@ -16,30 +16,31 @@ export class RestDataSource{
     auth_token: string; 
 
     constructor(private http: HttpClient){
-      //  this.baseUrl = "http://localhost:300/";
-
-      this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;        
+      this.baseUrl = "http://localhost:3000/";
+     // this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;        
     }
 
     getEmployees(): Observable<HttpResponse<Employee[]>>{
-        return this.http.get<Employee[]>(this.baseUrl + "employees", { observe: 'response' })
+        return this.http.get<Employee[]>(this.baseUrl+ "employees", { observe: 'response' })
                         .pipe(catchError(this.handleError));
     }
     
     authenticate(user: string, pass: string): Observable<boolean>{
-
-        return this.http.post<any>(this.baseUrl + "login", {
-            name: user, password: pass
-        }).pipe(map(response => {
-            console.log(response);
-            this.auth_token = response.success ? response.token: null; 
-            return response.success;
-        }));
+      //   console.log( 'user is coming as ' + user + 'password is coming as ' + pass  )
+        return this.http.post<any>(this.baseUrl + "signin", {
+            username: user, password: pass
+        }).pipe(response => {
+                response.subscribe(resp => {
+                    this.auth_token = resp.success ? resp.token: null; 
+                //  console.log(' auth is ' + this.auth_token + ' or go with this ' + resp.token)
+                    response = resp.success;    
+            }) 
+            return response;
+        });
        
     }
 
     saveEmployee(employee: Employee): Observable<HttpResponse<Employee>>{
-
         return this.http.post<Employee>(this.baseUrl + "employees", employee, { observe: 'response' })
                         .pipe(catchError(this.handleError)); 
     }
@@ -60,37 +61,39 @@ export class RestDataSource{
    }
 
    // register new timer for non existent user 
+
    registerTime(timetrack):  Observable<TimeTrack>{
     return this.http.post<TimeTrack>(this.baseUrl + "timetrack", timetrack, this.getOptions())
    }
 
    // inserts new date to the absent array 
-   saveNewAbsent(timetrack): Observable<TimeTrack>{
-       return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/${timetrack.id}` , timetrack, this.getOptions())
+
+   saveNewAbsent(timetrack): Observable<HttpResponse<TimeTrack>>{
+       return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/absent/${timetrack.id}` , timetrack, { observe: 'response' })
    }
 
    // register all the hours that has been missued
 
    hoursWasted(timetrack): Observable<TimeTrack>{
-    return this.http.put<TimeTrack>(`${this.baseUrl}latehours/${timetrack.id}` , timetrack, this.getOptions())
+    return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/late/${timetrack.id}` , timetrack, this.getOptions())
    }
 
    // register over time
 
    overTime(timetrack):Observable<TimeTrack>{
-    return this.http.put<TimeTrack>(`${this.baseUrl}overtime/${timetrack.id}` , timetrack, this.getOptions())
+    return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/overtime/${timetrack.id}` , timetrack, this.getOptions())
    }
 
   // update sickleave dates 
    sickLeave(timetrack):Observable<TimeTrack>{
-    return this.http.put<TimeTrack>(`${this.baseUrl}sickleave/${timetrack.id}` , timetrack, this.getOptions())
+    return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/sickleave/${timetrack.id}` , timetrack, this.getOptions())
    }
 
 
  // update holiday dates 
 
  insertHoliday(timetrack):Observable<TimeTrack>{
-    return this.http.put<TimeTrack>(`${this.baseUrl}holiday/${timetrack.id}` , timetrack, this.getOptions())
+    return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/holiyday/${timetrack.id}` , timetrack, this.getOptions())
    }
 
 // delete a timetracker 
@@ -115,10 +118,17 @@ saveSalary(salary: Salary): Observable<Salary>{
 
    // for authentication purpose
     private getOptions(){
+
+       var headers = new HttpHeaders({
+            "Authorization": `Bearer<${this.auth_token}>`
+        })
+
+        console.log(headers)
+
         return {
             headers: new HttpHeaders({
                 "Authorization": `Bearer<${this.auth_token}>`
-            }) 
+            })
         }
     }
 
@@ -128,7 +138,8 @@ saveSalary(salary: Salary): Observable<Salary>{
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
     //  this.notificationService.error('An error occurred:' + error.error.message); 
-      console.error('An error occurred:', error.error.message);
+   // console.error("The response to be handled is " + error)
+   //   console.error('An error occurred:', error.error.message);
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,

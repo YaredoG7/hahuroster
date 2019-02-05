@@ -3,6 +3,8 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { AppRoutingModule } from './routes/app-routing.module';
 import { AppComponent } from './app.component';
 import {DashboardModule} from './dashboard/dashboard.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -12,7 +14,8 @@ import {DashboardModule} from './dashboard/dashboard.module';
   imports: [
     BrowserModule,
     AppRoutingModule, 
-    DashboardModule
+    DashboardModule, 
+    BrowserAnimationsModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'am' }],
   bootstrap: [AppComponent]

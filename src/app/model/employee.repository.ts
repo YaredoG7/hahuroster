@@ -60,13 +60,17 @@ export class EmployeeRepository {
                 this.employees.push(resp.body)
                     this.notificationService.success('Saved successfully')
                     setTimeout(()=>{
-                        this.router.navigateByUrl("/employees"); 
+                        this.router.navigateByUrl("/dashboard/employees"); 
                       }, 5000)
+                     
             }, error => {
                 this.notificationService.error(error);
-              //  console.log("Reached me..." + error)
-            });
-            this.timetrack = new TimeTrack(employee.id, employee.empId)
+                console.log("The whole response is " + error)
+              //  console.log("Recieved error from back ..." + error.response)
+            });  
+            // register time track for registered employee 
+            
+            this.timetrack = new TimeTrack(employee.id, employee.empId, employee.fullName)
             this.dataSource.registerTime(this.timetrack).subscribe(p => this.timetracks.push(p)); 
             
         } else {
@@ -74,7 +78,7 @@ export class EmployeeRepository {
                 this.employees.push(resp.body)
                     this.notificationService.success('Upated successfully')
                     setTimeout(()=>{
-                        this.router.navigateByUrl("/employees"); 
+                        this.router.navigateByUrl("/dashboard/employees"); 
                       }, 5000)
             }, error => {
                 this.notificationService.error(error);

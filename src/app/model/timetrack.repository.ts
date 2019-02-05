@@ -4,21 +4,22 @@ import {RestDataSource} from "./rest.datasource";
 import {Observable} from "rxjs";
 import {TimeTrack} from "./timeTrack.model";
 import {Employee} from "./employee.model"; 
+import { NotificationService} from '../notification/notification.service';
 
 @Injectable()
 
 export class TimeTrackRepository{
     private timetracks: TimeTrack[] = []; 
 
-    constructor(private dataSource: RestDataSource){
+    constructor(private dataSource: RestDataSource, private notificationService: NotificationService){
       dataSource.getTimeTracks().subscribe(data => {
           this.timetracks = data;
-        //  console.log(data);
+         // console.log(data);
       });
     }
 
     getTimeTracks(){
-      
+      return this.timetracks;
     }
 
     registerTime(timetrack: TimeTrack){
@@ -26,10 +27,16 @@ export class TimeTrackRepository{
     }
 
     saveNewAbsent(timetrack: TimeTrack){
-       // for saving the absentees
-        this.dataSource.saveNewAbsent(timetrack).subscribe(tr => {
-            this.timetracks.splice(this.timetracks.findIndex(tr => tr.empId == timetrack.empId), 1, timetrack)
-            })    
+      
+        // for saving the absentees
+       this.dataSource.saveNewAbsent(timetrack).subscribe((resp) => {
+        this.timetracks.push(resp.body); 
+        if(resp.status == 200){
+         this.notificationService.success('መረጃው በተሳካ ሁኔታ ተመዝግቧል')
+        } }, error => {
+         this.notificationService.error('ያልተሳካ ምዝገባ ' + error); 
+         console.log(error); 
+     });
         }
 
      hoursWasted(timetrack:TimeTrack){

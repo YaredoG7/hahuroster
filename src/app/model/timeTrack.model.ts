@@ -4,13 +4,13 @@ export class TimeTrack {
 
        public id?: number, 
        public empId?: string, 
-       public absentDates?: string,
-       public sickDates?: string, 
+       public fullName?: string,
+       public absentDates?: string, 
+       public sickDates?: string,
        public holidays?: string,
-       public lateHours?: number, 
-       public lateMinutes?: number, 
-       public overTimeHour?: number,
-       public overTimeMinutes?: number
+       public lateTime?: string,
+       public overTime?: string,
+       public comment?: string
 
     ){
        

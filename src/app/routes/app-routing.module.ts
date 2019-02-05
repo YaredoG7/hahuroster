@@ -14,41 +14,58 @@ import { ReportsComponent } from '../dashboard/reports/reports.component';
 const routes: Routes = [
 
       {
+        path: "",
+        redirectTo: '/login',
+        pathMatch: 'full'
+
+      }, 
+      {
         path: "login",
         component: LoginComponent
 
       }, 
       {
-        path: "main",
-        component: MainComponent
-       // canActivate: [AuthGuard]
+        path: "dashboard",
+        component: DashboardComponent,
+        // canActivate: [AuthGuard], 
+         children: [
+         {
+          path: "main",
+          component: MainComponent,
+          // canActivate: [AuthGuard],
+         }, 
+         {
+          path: "employees", 
+          component: EmployeesComponent
+         }, 
+         {
+          path: "employees/:mode/:id", 
+          component: EditEmployeeComponent
+        }, 
+        {
+          path: "employees/:mode", 
+          component: EditEmployeeComponent
+        },
+        {
+          path: "timetrack", 
+          component: TimetrackComponent
+        }, 
+        {
+          path: "payment", 
+          component: PaymentComponent
+        },
+        {
+          path: "reports", 
+          component: ReportsComponent
+        }
+       
+       ]
 
-      }, 
-      {
-        path: "employees", 
-        component: EmployeesComponent, 
-        
-      
-      //  canActivate: [AuthGuard]  
-      }, 
-      {
-        path: "employees/:mode/:id", component: EditEmployeeComponent
-      }, 
-      {
-        path: "employees/:mode", component: EditEmployeeComponent
-      },
-      {
-        path: "timetrack", component: TimetrackComponent
-      }, 
-      {
-        path: "payment", component: PaymentComponent
-      },
-      {
-        path: "reports", component: ReportsComponent
-      },
-      {
-        path: "**", redirectTo: "login"
       }
+    
+      // {
+      //   path: "**", redirectTo: "login"
+      // }
 ];
 
 @NgModule({

@@ -1,11 +1,13 @@
 import { Component, OnInit, HostBinding, AfterViewInit } from '@angular/core';
 import {HahuNotification, NotificationType, INotify} from '../model/notification'; 
 import {NotificationService} from './notification.service'; 
+import { slideVerticalToggleAnimation } from '../../animations';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css']
+  styleUrls: ['./notification.component.css'], 
+  animations: [slideVerticalToggleAnimation]
 })
 export class NotificationComponent implements OnInit, AfterViewInit {
   @HostBinding('class.app-notification') true; 
