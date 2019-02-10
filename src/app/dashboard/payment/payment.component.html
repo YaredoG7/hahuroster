@@ -46,7 +46,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text bg-transparent"> ግብር ( % ):</span>
             </div>
-            <select class="custom-select mr-sm-2"  [(ngModel)]="taxRate">
+            <select class="custom-select mr-sm-2"   (input)="calTax($event.target.value)">
               <option selected >0%</option>
               <option >10%</option>
               <option >15%</option>
@@ -62,12 +62,11 @@
             <div class="input-group-prepend">
               <span class="input-group-text bg-transparent"> ጡረታ:</span>
             </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              value="7%"
-            />
+            <select class="custom-select mr-sm-2"   (input)="calPension($event.target.value)">
+                <option selected >0%</option>
+                <option >7%</option>
+                <option >11%</option>
+              </select>
           </div>
           <hr />
           <h5>
@@ -75,7 +74,7 @@
             <span>
               <button
                 class="btn btn-success float-right"
-                (click)="openVerticallyCentered(content)"
+                (click)="openVerticallyCentered(content, true)"
               >
                 +
               </button>
@@ -84,46 +83,46 @@
           <br />
           <div class="showTable">
             <table class="table table-sm table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>ምክያት</th>
-                  <th>ፐርሰንት</th>
-                  <th>የተጣራ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
+                <thead>
+                    <tr>
+                      <th>ምክያት</th>
+                      <th>ፐርሰንት</th>
+                      <th>የተጣራ</th>
+                      <th></th>
+                    </tr>
+                  </thead>
 
-                <tr>
-                  <td>ኦቨር ታይም</td>
-                  <td>%</td>
-                  <td>500</td>
+               <tbody>
+                <tr *ngFor="let field of addableArray; let i = index">
+                    <td>
+                        {{field.reason}}
+                        <!-- <input [(ngModel)]="field.code" class="form-control" type="text" name="{{field.code}}" /> -->
+                    </td>
+                    <td>
+                        {{field.percent}} % 
+                        <!-- <input [(ngModel)]="field.name" class="form-control" type="text" name="{{field.name}}" /> -->
+                    </td>
+                    <td>
+                        {{field.amount}}
+                        <!-- <input [(ngModel)]="field.price" class="form-control" type="text" name="{{field.price}}" /> -->
+                    </td>
+                    <td>
+                        <button class="btn btn-sm bg-danger"  type="button" (click)="deleteAdds(i)">Delete</button>
+                    </td>
                 </tr>
-                <tr>
-                  <td>ቦነስ</td>
-                  <td>%</td>
-                  <td>600</td>
-                </tr>
-                <tr>
-                  <td>ኮሚሽን</td>
-                  <td>5%</td>
-                  <td>1700</td>
-                </tr>
-              </tbody>
+            </tbody>
             </table>
 
             <br />
-
             <button
               class="btn btn-success float-left"
-              (click)="saveSalary()"
-            >
+              (click)="isAnswerProvided()">
             ስሌት
             </button>
-            <br />
-            <br />
-            <hr />
-            <h6>አጠቃላይ ተጨማሪ: 2800 </h6>
+            <br/>
+            <br/>
+            <hr/>
+            <h6>አጠቃላይ ተጨማሪ: {{addable}} </h6>
           </div>
         </div>
         <div class="col-1"></div>
@@ -133,8 +132,7 @@
             <span>
               <button
                 class="btn btn-danger float-right"
-                (click)="openVerticallyCentered(content)"
-              >
+                (click)="openVerticallyCentered(content, false)" >
                 -
               </button>
             </span>
@@ -150,13 +148,23 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- [attr.colspan]="model.getProducts().length" *ngFor="let sa of getSlary()"-->
-
-                <tr>
-                  <td>ሰርቪስ</td>
-                  <td>%</td>
-                  <td>400</td>
-                </tr>
+                  <tr *ngFor="let field of subsArray; let i = index">
+                      <td>
+                          {{field.reason}}
+                          <!-- <input [(ngModel)]="field.code" class="form-control" type="text" name="{{field.code}}" /> -->
+                      </td>
+                      <td>
+                          {{field.percent}} % 
+                          <!-- <input [(ngModel)]="field.name" class="form-control" type="text" name="{{field.name}}" /> -->
+                      </td>
+                      <td>
+                          {{field.amount}}
+                          <!-- <input [(ngModel)]="field.price" class="form-control" type="text" name="{{field.price}}" /> -->
+                      </td>
+                      <td>
+                          <button class="btn btn-sm bg-danger"  type="button" (click)="deleteSubs(i)">Delete</button>
+                      </td>
+                  </tr>
               </tbody>
             </table>
 
@@ -201,6 +209,7 @@
                   </li>
                   <li
                     class="list-group-item d-flex justify-content-between align-items-center"
+                    (click) = "calDed()"
                   >
                     የሰዓታት ብዛት
                     <span class="badge badge-danger badge-pill">02:00</span>
@@ -229,7 +238,7 @@
 
           <br />
           <hr />
-          <h6>አጠቃላይ ተቀናሽ: 2900</h6>
+          <h6>አጠቃላይ ተቀናሽ: <span class="text-danger">{{taxCalc + deduction || 0}}</span> </h6>
           <br />
           <h5>የተጣራ ወርሃዊ ክፍያ: 8000</h5>
         </div>
@@ -241,9 +250,13 @@
 </div>
 
 <!-- Modal content -->
+
 <ng-template #content let-modal>
+
   <div class="modal-header bg-dark text-white">
-    <h4 class="modal-title" id="modal-basic-title">ተጨማሪ</h4>
+
+    <h4 class="modal-title" id="modal-basic-title">{{toCalulate}}</h4>
+
     <button
       type="button"
       class="close"
@@ -254,26 +267,31 @@
     </button>
   </div>
   <div class="modal-body bg-white text-dark">
+    <small style="font-size: 11px" class="text-muted">Please enter either the percent or the amount and the other will be calculated automatically</small>
+    <br>
+    <br>
     <p>
       ምክያት : &nbsp;
-      <input class="float-right" type="form-control" name="mobilePhone" />
+      <!-- <input class="float-right" type="form-control" name="mobilePhone"  [(ngModel)]="reason"/> -->
+      <input class="form-control" type="text" id="reason" [(ngModel)]="newAttribute.reason" name="reason" />
     </p>
     <p>
-      ፐርሰንት : &nbsp; <input class="float-right" type="number" name="address" />
+      ፐርሰንት : &nbsp; 
+      <!-- <input class="float-right" type="number" name="address" [(ngModel)]="percent" /> -->
+      <input  class="form-control" type="number" id="percent" [(ngModel)]="newAttribute.percent" name="percent" 
+      (input)="percentAmt($event.target.value)"/>
     </p>
     <p>
       ስሌት : &nbsp;
-      <input class="float-right" type="number" name="emailAddress" />
+      <!-- <input class="float-right" type="number" name="emailAddress" [(ngModel)]="amount" /> -->
+      <input  class="form-control" type="number" id="amount" [(ngModel)]="newAttribute.amount" name="amount" 
+      (input)="totalAmt($event.target.value)"/>
     </p>
   </div>
   <div class="modal-footer warning ">
-    <button
-      type="submit"
-      class="btn text-white bg-success"
-      (click)="saveSlary(newSalary)"
-    >
-      መዝግብ
-    </button>
+
+    <button class="btn btn-default" type="button" (click)="addFieldValue()">መዝግብ</button>
+   
     <button
       type="button"
       class="btn text-white bg-danger"
@@ -285,3 +303,35 @@
 </ng-template>
 
 <!-- End of modal content  -->
+
+<ng-template #notify let-modal>
+    <div class="modal-header bg-info text-white">
+      <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+      >
+        <span class="text-danger" aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-white text-dark">
+      አዲስ መረጃ በ  ላይ ይመዘገባል! ቀጥል?
+    </div>
+    <div class="modal-footer warning ">
+      <button
+        type="button"
+        class="btn text-white bg-success"
+        (click)="modal.close() && isTrue=true"
+      >
+        መዝግብ
+      </button>
+      <button
+        type="button"
+        class="btn text-white bg-danger"
+        (click)="modal.close() && isTrue=false"
+      >
+        ተመለስ
+      </button>
+    </div>
+  </ng-template>
