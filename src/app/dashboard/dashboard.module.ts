@@ -14,12 +14,13 @@ import { PaymentComponent } from './payment/payment.component';
 import { ReportsComponent } from './reports/reports.component';
 import { NotificationComponent } from '../notification/notification.component'; 
 import {NotificationService} from '../notification/notification.service'; 
+import { ChartsModule } from 'ng2-charts';
 
 
 
 
 @NgModule({
-    imports: [ModelModule, BrowserModule, FormsModule, RouterModule, NgbModule],
+    imports: [ModelModule, BrowserModule, FormsModule, RouterModule, NgbModule, ChartsModule],
     providers: [NotificationService],
     declarations: [DashboardComponent, EmployeesComponent, LoginComponent, MainComponent, 
           EditEmployeeComponent, TimetrackComponent, PaymentComponent, ReportsComponent , NotificationComponent], 
