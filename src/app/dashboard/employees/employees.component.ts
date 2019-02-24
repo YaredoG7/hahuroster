@@ -11,6 +11,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class EmployeesComponent {
   selectedEmployee: Employee;
+  selectedUser: any;
   display: string;
   isSelected: string; 
   deleteEmp: boolean; 
@@ -19,6 +20,7 @@ export class EmployeesComponent {
     this.selectedEmployee = new Employee(0);
     this.display = '';
     this.deleteEmp = false; 
+    this.getUser();
   }
 
   getEmployees(): Employee[] {
@@ -29,6 +31,15 @@ export class EmployeesComponent {
 
   getSelectedEmp(emp: Employee) {
     this.selectedEmployee = emp;
+  }
+
+  getUser(){
+    this.repository.getUsers().subscribe((resp) => {
+      this.selectedUser = resp.body[2].providerData.picture.data.url
+      console.log('got user ' + resp.body[2].firstName)
+    }, error => {
+      console.log('error occured')
+    })
   }
 
   // get selected employee

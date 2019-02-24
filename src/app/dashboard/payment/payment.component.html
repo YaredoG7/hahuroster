@@ -22,13 +22,18 @@
         >
           <i class="fa fa-search fa-x">&nbsp; &nbsp; ፈልግ</i>
         </button>
+        <span
+          class="float-right mr-4"
+          style="font-size:24px"
+          *ngFor="let sal of getSalaries()"
+          ><i class="fa fa-user-circle fa-x"></i> {{ employee.fullName }}</span
+        >
       </p>
 
-      <h2 *ngFor="let sal of getSalaries()"><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2>
       <hr />
       <div class=" row">
         <div class="col-5 salryInput">
-          <!-- Adding the 6th employee attribute -->
+          <!-- Adding the 6th employee attribute employee.grossPayment-->
           <div class=" input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text bg-transparent"> ክፍያ:</span>
@@ -37,7 +42,7 @@
               type="text"
               readonly
               class="form-control bg-white"
-              [(ngModel)]="employee.grossPayment"
+              [(ngModel)]="grosspayment"
             />
           </div>
 
@@ -46,14 +51,17 @@
             <div class="input-group-prepend">
               <span class="input-group-text bg-transparent"> ግብር ( % ):</span>
             </div>
-            <select class="custom-select mr-sm-2"   (input)="calTax($event.target.value)">
-              <option selected >0%</option>
-              <option >10%</option>
-              <option >15%</option>
-              <option >20%</option>
-              <option >25%</option>
-              <option >30%</option>
-              <option >35%</option>
+            <select
+              class="custom-select mr-sm-2"
+              (input)="calTax($event.target.value)"
+            >
+              <option selected>0%</option>
+              <option>10%</option>
+              <option>15%</option>
+              <option>20%</option>
+              <option>25%</option>
+              <option>30%</option>
+              <option>35%</option>
             </select>
           </div>
 
@@ -62,68 +70,69 @@
             <div class="input-group-prepend">
               <span class="input-group-text bg-transparent"> ጡረታ:</span>
             </div>
-            <select class="custom-select mr-sm-2"   (input)="calPension($event.target.value)">
-                <option selected >0%</option>
-                <option >7%</option>
-                <option >11%</option>
-              </select>
+            <select
+              class="custom-select mr-sm-2"
+              (input)="calPension($event.target.value)"
+            >
+              <option selected>0%</option>
+              <option>7%</option>
+              <option>11%</option>
+            </select>
           </div>
           <hr />
           <h5>
             ተጨማሪ:
             <span>
               <button
-                class="btn btn-success float-right"
+                class="btn text-success float-right add"
                 (click)="openVerticallyCentered(content, true)"
               >
-                +
+                <i class="fa fa-plus"></i>
               </button>
             </span>
           </h5>
           <br />
           <div class="showTable">
             <table class="table table-sm table-striped table-hover">
-                <thead>
-                    <tr>
-                      <th>ምክያት</th>
-                      <th>ፐርሰንት</th>
-                      <th>የተጣራ</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-
-               <tbody>
-                <tr *ngFor="let field of addableArray; let i = index">
-                    <td>
-                        {{field.reason}}
-                        <!-- <input [(ngModel)]="field.code" class="form-control" type="text" name="{{field.code}}" /> -->
-                    </td>
-                    <td>
-                        {{field.percent}} % 
-                        <!-- <input [(ngModel)]="field.name" class="form-control" type="text" name="{{field.name}}" /> -->
-                    </td>
-                    <td>
-                        {{field.amount}}
-                        <!-- <input [(ngModel)]="field.price" class="form-control" type="text" name="{{field.price}}" /> -->
-                    </td>
-                    <td>
-                        <button class="btn btn-sm bg-danger"  type="button" (click)="deleteAdds(i)">Delete</button>
-                    </td>
+              <thead>
+                <tr>
+                  <th>ምክያት</th>
+                  <th>ፐርሰንት</th>
+                  <th>የተጣራ</th>
+                  <th></th>
                 </tr>
-            </tbody>
-            </table>
+              </thead>
 
+              <tbody>
+                <tr *ngFor="let field of addableArray; let i = index">
+                  <td>
+                    {{ field.reason }}
+                  </td>
+                  <td>{{ field.percent }} %</td>
+                  <td>
+                    {{ field.amount }}
+                  </td>
+                  <td>
+                    <button
+                      class="btn btn-sm bg-danger"
+                      type="button"
+                      (click)="deleteAdds(i)"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <br />
-            <button
-              class="btn btn-success float-left"
-              (click)="isAnswerProvided()">
-            ስሌት
-            </button>
-            <br/>
-            <br/>
-            <hr/>
-            <h6>አጠቃላይ ተጨማሪ: {{addable}} </h6>
           </div>
+          <hr />
+          <h6>አጠቃላይ ተጨማሪ: {{ addable }}</h6>
+          <h6>
+            አጠቃላይ ተቀናሽ:
+            <span class="text-danger">{{ total_deduction() || 0 }}</span>
+          </h6>
+          <h5>የተጣራ ወርሃዊ ክፍያ: {{ calcNet() || 0 }}</h5>
         </div>
         <div class="col-1"></div>
         <div class="col-5">
@@ -131,9 +140,10 @@
             ተቀናሽ:
             <span>
               <button
-                class="btn btn-danger float-right"
-                (click)="openVerticallyCentered(content, false)" >
-                -
+                class="btn text-danger float-right"
+                (click)="openVerticallyCentered(content, false)"
+                                                                                                >
+                <i class="fa fa-minus"></i>
               </button>
             </span>
           </h5>
@@ -148,99 +158,77 @@
                 </tr>
               </thead>
               <tbody>
-                  <tr *ngFor="let field of subsArray; let i = index">
-                      <td>
-                          {{field.reason}}
-                          <!-- <input [(ngModel)]="field.code" class="form-control" type="text" name="{{field.code}}" /> -->
-                      </td>
-                      <td>
-                          {{field.percent}} % 
-                          <!-- <input [(ngModel)]="field.name" class="form-control" type="text" name="{{field.name}}" /> -->
-                      </td>
-                      <td>
-                          {{field.amount}}
-                          <!-- <input [(ngModel)]="field.price" class="form-control" type="text" name="{{field.price}}" /> -->
-                      </td>
-                      <td>
-                          <button class="btn btn-sm bg-danger"  type="button" (click)="deleteSubs(i)">Delete</button>
-                      </td>
-                  </tr>
+                <tr *ngFor="let field of subsArray; let i = index">
+                  <td>
+                    {{ field.reason }}
+                  </td>
+                  <td>{{ field.percent }} %</td>
+                  <td>
+                    {{ field.amount }}
+                  </td>
+                  <td>
+                    <button
+                      class="btn btn-sm bg-danger"
+                      type="button"
+                      (click)="deleteSubs(i)"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
-
-            <h5 class="float-left">ቀሪ ቀናቶች</h5>
-            <br />
-            <hr />
-
-            <div class="row">
-              <div class="col-6">
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">ከቀን</span>
-                  </div>
-                  <input
-                   
-                    class="form-control"
-                    placeholder="ቀን"
-                 
-                    aria-describedby="basic-addon1"
-                  />
-                </div>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">እስከ</span>
-                  </div>
-                  <input
-                    
-                    class="form-control"
-                    placeholder="እስከ"
-                  
-                    aria-describedby="basic-addon1"
-                  />
-                </div>
-              </div>
-              <div class="col-6">
-                <ul class="list-group border-success">
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    የቀሪ ቀናት ብዛት
-                    <span class="badge badge-danger badge-pill">3</span>
-                  </li>
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center"
-                    (click) = "calDed()"
-                  >
-                    የሰዓታት ብዛት
-                    <span class="badge badge-danger badge-pill">02:00</span>
-                  </li>
-                </ul>
-              </div>
-
+          </div>
+          <br>
+          <h5 class="float-left">ቀሪ ቀናቶች</h5>
+          <br>
+          
+            
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">ቅጣት/ቀን</span>
+                  <span class="input-group-text" id="basic-addon1">ከ</span>
                 </div>
-                <input
-                  type="number"
-                  class="form-control"
-                  placeholder="ተቀናሽ ብር መጠን ለ1 ቀን ቀሪ"
-                />
+                <input class="form-control" placeholder="ቀን"
+                       name="dp" [(ngModel)]="start_date" ngbDatepicker #d="ngbDatepicker" placement="bottom" (click)="d.toggle()">
+                
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">እስከ</span>
+                  </div>
+                  <input class="form-control" placeholder="ቀን"
+                  name="dp" [(ngModel)]="end_date" ngbDatepicker #c="ngbDatepicker" placement="bottom" (click)="c.toggle()">
               </div>
-              <button
-                class="btn btn-success float-right"
-                (click)="calculateDeduction()"
-              >
-                ስሌት
-              </button>
+              <div class="date-count">
+                <p>የቀሪ ቀናት ብዛት: <span class="badge badge-danger">{{get_date_count() || 0}}</span> </p>
+         
+                <p>የሰዓታት ብዛት: {{hoursWasted || 0}}</p>
+              </div>
+
+     
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">ቅጣት/ቀን</span>
+              </div>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="ተቀናሽ ብር መጠን ለ1 ቀን ቀሪ"
+                (input)= "penalityRate=$event.target.value"
+              />
             </div>
-          </div>
+            <p>የቀሪ ቀናት ቅጣት: {{date_penality() || 0}} </p>
+            <p>የቀሪ ሰዓታት ቅጣት: {{hour_penality() || 0}}</p>
+            <button class="btn btn-success m-1" (click)="savePayment()">
+                መዝግብ
+              </button>
+              <button class="btn btn-warning m-1" (click)="clear()">
+                አዲስ
+              </button>
 
           <br />
           <hr />
-          <h6>አጠቃላይ ተቀናሽ: <span class="text-danger">{{taxCalc + deduction || 0}}</span> </h6>
+
           <br />
-          <h5>የተጣራ ወርሃዊ ክፍያ: 8000</h5>
         </div>
       </div>
     </div>
@@ -252,10 +240,8 @@
 <!-- Modal content -->
 
 <ng-template #content let-modal>
-
   <div class="modal-header bg-dark text-white">
-
-    <h4 class="modal-title" id="modal-basic-title">{{toCalulate}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{ toCalulate }}</h4>
 
     <button
       type="button"
@@ -267,31 +253,53 @@
     </button>
   </div>
   <div class="modal-body bg-white text-dark">
-    <small style="font-size: 11px" class="text-muted">Please enter either the percent or the amount and the other will be calculated automatically</small>
-    <br>
-    <br>
+    <small style="font-size: 11px" class="text-muted"
+      >Please enter either the percent or the amount and the other will be
+      calculated automatically</small
+    >
+    <br />
+    <br />
     <p>
       ምክያት : &nbsp;
       <!-- <input class="float-right" type="form-control" name="mobilePhone"  [(ngModel)]="reason"/> -->
-      <input class="form-control" type="text" id="reason" [(ngModel)]="newAttribute.reason" name="reason" />
+      <input
+        class="form-control"
+        type="text"
+        id="reason"
+        [(ngModel)]="newAttribute.reason"
+        name="reason"
+      />
     </p>
     <p>
-      ፐርሰንት : &nbsp; 
+      ፐርሰንት : &nbsp;
       <!-- <input class="float-right" type="number" name="address" [(ngModel)]="percent" /> -->
-      <input  class="form-control" type="number" id="percent" [(ngModel)]="newAttribute.percent" name="percent" 
-      (input)="percentAmt($event.target.value)"/>
+      <input
+        class="form-control"
+        type="number"
+        id="percent"
+        [(ngModel)]="newAttribute.percent"
+        name="percent"
+        (input)="percentAmt($event.target.value)"
+      />
     </p>
     <p>
       ስሌት : &nbsp;
       <!-- <input class="float-right" type="number" name="emailAddress" [(ngModel)]="amount" /> -->
-      <input  class="form-control" type="number" id="amount" [(ngModel)]="newAttribute.amount" name="amount" 
-      (input)="totalAmt($event.target.value)"/>
+      <input
+        class="form-control"
+        type="number"
+        id="amount"
+        [(ngModel)]="newAttribute.amount"
+        name="amount"
+        (input)="totalAmt($event.target.value)"
+      />
     </p>
   </div>
   <div class="modal-footer warning ">
+    <button class="btn btn-default" type="button" (click)="addFieldValue()">
+      መዝግብ
+    </button>
 
-    <button class="btn btn-default" type="button" (click)="addFieldValue()">መዝግብ</button>
-   
     <button
       type="button"
       class="btn text-white bg-danger"
@@ -305,33 +313,29 @@
 <!-- End of modal content  -->
 
 <ng-template #notify let-modal>
-    <div class="modal-header bg-info text-white">
-      <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-      >
-        <span class="text-danger" aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body bg-white text-dark">
-      አዲስ መረጃ በ  ላይ ይመዘገባል! ቀጥል?
-    </div>
-    <div class="modal-footer warning ">
-      <button
-        type="button"
-        class="btn text-white bg-success"
-        (click)="modal.close() && isTrue=true"
-      >
-        መዝግብ
-      </button>
-      <button
-        type="button"
-        class="btn text-white bg-danger"
-        (click)="modal.close() && isTrue=false"
-      >
-        ተመለስ
-      </button>
-    </div>
-  </ng-template>
+  <div class="modal-header bg-info text-white">
+    <h4 class="modal-title" id="modal-basic-title">ማረጋገጫ</h4>
+    <button type="button" class="close" aria-label="Close">
+      <span class="text-danger" aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-white text-dark">
+    አዲስ መረጃ በ ላይ ይመዘገባል! ቀጥል?
+  </div>
+  <div class="modal-footer warning ">
+    <button
+      type="button"
+      class="btn text-white bg-success"
+      (click)="modal.close() && (isTrue = true)"
+    >
+      መዝግብ
+    </button>
+    <button
+      type="button"
+      class="btn text-white bg-danger"
+      (click)="modal.close() && (isTrue = false)"
+    >
+      ተመለስ
+    </button>
+  </div>
+</ng-template>

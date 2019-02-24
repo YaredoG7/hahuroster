@@ -40,6 +40,13 @@ export class RestDataSource{
        
     }
 
+    // get users 
+
+    getUsers(): Observable<HttpResponse<any>>{
+        return this.http.get<any>(this.baseUrl+'users', {observe: 'response'})
+                        .pipe(catchError(this.handleError));
+    }
+
     saveEmployee(employee: Employee): Observable<HttpResponse<Employee>>{
         return this.http.post<Employee>(this.baseUrl + "employees", employee, { observe: 'response' })
                         .pipe(catchError(this.handleError)); 

@@ -8,3 +8,14 @@
 .salryInput span {
     border: none;
 }
+
+.showTable  {
+  border: 1px solid rgb(27, 182, 221);
+  min-height: 100px;
+  max-height: 150px;
+  overflow-y: scroll; 
+}
+
+.date-input{
+  display: grid;
+}

@@ -34,6 +34,10 @@ export class EmployeeRepository {
         return this.employees
            .filter(em => department == null || department == em.department); 
     }
+
+    getUsers(){
+        return this.dataSource.getUsers();
+    }
    
     // get employees by empId
 

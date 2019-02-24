@@ -36,11 +36,13 @@ const routes: Routes = [
          }, 
          {
           path: "employees", 
-          component: EmployeesComponent
+          component: EmployeesComponent, 
+         // canActivate: [AuthGuard],
          }, 
          {
           path: "employees/:mode/:id", 
-          component: EditEmployeeComponent
+          component: EditEmployeeComponent, 
+        //  canActivate: [AuthGuard],
         }, 
         {
           path: "employees/:mode", 
@@ -48,24 +50,27 @@ const routes: Routes = [
         },
         {
           path: "timetrack", 
-          component: TimetrackComponent
+          component: TimetrackComponent, 
+        //  canActivate: [AuthGuard],
         }, 
         {
           path: "payment", 
-          component: PaymentComponent
+          component: PaymentComponent, 
+         // canActivate: [AuthGuard],
         },
         {
           path: "reports", 
-          component: ReportsComponent
+          component: ReportsComponent, 
+         // canActivate: [AuthGuard],
         }
        
        ]
 
-      }
+      }, 
     
-      // {
-      //   path: "**", redirectTo: "login"
-      // }
+      {
+        path: "**", redirectTo: "login"
+      }
 ];
 
 @NgModule({
