@@ -27,8 +27,8 @@
         <!-- <h2 ><i class="fa fa-user-circle fa-x"></i> {{employee.fullName}}</h2> -->
         <hr />
         <div class=" row">
-          <div class="col-4 salryInput">
-         <div class="card card-body bg-info">
+          <div class="col-5 salryInput">
+         <div class="card card-body">
           <!-- Adding the details of the selected employee -->
           <div class=" input-group mb-3">
               <div class="input-group-prepend">
@@ -76,129 +76,77 @@
                 [(ngModel)]="employee.position"
               />
             </div>
-          </div>  
-            <hr />
-            <h5>
-            ቀን ማስገቢያ:
-            
-            </h5>
-            <!-- <form novalidate #form="ngForm">
-            
-                <ul class="text-danger list-unstyled" *ngIf="formSubmitted && form.invalid">  
-                    <li> እባክዎ ዓመት, ወር, ቀን (ቁጥር ብቻ) ያስገቡ</li>
-                    <li>ዓመት ባለ 4 ወር እና ቀን ባለ 2 ቁጥር ቁጥር መሆን አለበት</li>
-                    
-                </ul>
-                <ul class="text-danger list-unstyled">  
-                    <li  *ngIf="monthFlow" > ወር ከ 12 መበለጥ የለበትም</li>
-                    <li  *ngIf="dayFlow" >  ቀን ከ 30 መበለጥ የለበትም</li>
-                   
-                </ul>
-         
-               <div class="input-group p-2">
-                  <div class="input-group-prepend">
-                  </div>
-                  <input 
-                          class="form-control" 
-                          placeholder="ዓ/ም"
-                          type="form-control"
-                          name="dateYear" 
-                          #year="ngModel" 
-                          required minlength="4" 
-                          maxlength="4"
-                          pattern="^[0-9]+$"
-                          [(ngModel)]="dateYear">
-                  <input type="form-control"
-                          class="form-control"
-                          placeholder="ወር"
-                          name="dateMonth"
-                          #month="ngModel" 
-                          required minlength="2" 
-                          maxlength="2"
-                          pattern="^[0-9]+$"
-                          (mouseleave)="check()"
-                          [(ngModel)]="dateMonth">
-                  <input class="form-control"
-                         placeholder="ቀን"
-                          name="dateDay"
-                          #day="ngModel" 
-                          (mouseleave)="checkTwo()"
-                          required minlength="2" 
-                          maxlength="2"
-                          pattern="^[0-9]+$"
-                          [(ngModel)]="dateDay">
-                </div>
-            </form> -->
-            <form class="form-inline" novalidate #form="ngForm">
-                <div class="form-group">
-                  <div class="input-group">
-                    <input class="form-control" placeholder="ዓ/ም-ወር-ቀን"
-                           name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar text-dark"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <pre> {{date | json}}</pre>
-            <hr>
-            <div class="input-group input-group-sm ">
-                <input class="float-left p-2 m-2"
-                [(ngModel)]="disabled"
-                  (change)="isAnswerProvided($event)"
-                  type="checkbox"
-                  
-                />
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">ቀን</span>
+             
+              <input class="form-control" placeholder="ሚመዘገበው ቀን"
+              name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar text-dark"></i></button>
+              </div>
+            </div>
+              <pre>* ባዶ ቦታው ላይ ክሊክ አድርገው ቀን ይምረጡ </pre>
+            </div>
+            <div class="input-group" >
                 <div class="input-group-prepend">
-                  <span ><h5>ሰዓት ማስገቢያ:</h5></span>
+                  <div class="input-group-text border-success">
+                    <input  [(ngModel)]="disabled" (change)="isAnswerProvided($event)"
+                     type="checkbox" aria-label="Checkbox for following text input">
+                     <span>ሰዓት</span>
+                  </div>
+                 
                 </div>
                 <ngb-timepicker class="ml-3"
                 [(ngModel)]="time"
                 [disabled]="!disabled"
               ></ngb-timepicker>
-              </div>
+              <pre>* ሰአት ለመመዝገብ ሳጥንዋን ክሊክ ያድርጉ </pre>
+            </div>
 
-            <br />
-            <hr>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  class="btn btn-sm btn-outline-primary mr-2"
-                  (click)="openVerticallyCentered(content)"
-                 
-                >
-                  ቀሪ መዝግብ
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-primary mr-2"
-                  (click)="isAbsent(form)"
-                >
-                  ሰዓት መዝግብ
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-primary mr-2"
-                  (click)="sickLeave()"
-                >
-                  ቀሪ (በህመም)
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-primary mr-2"
-                  (click)="getTime()"
-                >
-                  የእረፍት ፈቃድ
-                </button>
-
-                <!-- Handle click when no employee is selected  -->
-                <button
-                  class="btn btn-sm btn-outline-primary mr-2"
-                  (click)="insertHoliday()"
-                >
-                  ቀዳሚ ገጵ
-                </button>
+            <div class=" input-group " >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"> ምን?</span>
+                 <select class="custom-select mr-sm-2" (input)="save($event.target.value)">
+                  <option selected>ምረጥ</option>
+                  <option>ቀሪ መዝግብ</option>
+                  <option>ሰዓት መዝግብ</option>
+                  <option>ቀሪ (በህመም)</option>
+                  <option>የእረፍት ፈቃድ</option>
+                  <option>ኦቨር ታይም</option>
+                  <option>ሌላ ምክንያት</option>
+                </select>
               </div>
+              
+              <pre>* ሚመዘገበው መረጃ ምን እንደሆነ ይምረጡ </pre>
+              </div>
+              
+              
+              <div class=" input-group" *ngIf="other">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        ምክንያት </span>
+                  <input
+                    type="text"
+                    class="form-control bg-white"
+                    placeholder="ምክንያት"
+                    [(ngModel)]="employee.position"
+                  />
+                </div>
+                  <pre>* ሌላውን ምክንያት ያስገቡ </pre>
+                </div>
+          </div>  
+          <br>
+            <button class="btn btn-success m-1" (click)="saveTime()">
+                መዝግብ
+              </button>
+              <button class="btn btn-warning m-1" (click)="clear()">
+                አዲስ
+              </button>
           </div>
           <div class="col-1"></div>
-          <div class="col-7">
-            <div class="row m-3">
+          <div class="col-6">
+          
 
                 <!-- <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker> -->
                 <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
@@ -214,12 +162,27 @@
                       {{ date.day }}
                     </span>
                   </ng-template>
-                  
-
-
-            </div>
-            <div class="row m-2">
-                  <div class="card text-dark border-dark mb-3 m-2" style="max-width: 18rem;">
+                  <pre class="text-dark">* ብዙ ቀናትን ለመምረጥ ይሄን ካላንደር ይጠቀሙ</pre>
+               <hr>
+               <div class="row">
+                 
+                <div class="col-6">
+                    <p >በአጠቃላይ  የተመዘገቡ: </p> 
+                    <small>የቀሪ ቀናት ብዛት:  <span class="badge badge-danger ">7</span></small> <br>
+                    <small>ያሉት የእረፍት ቀናት: <span class="badge badge-danger ">2</span></small> <br>
+                    <small>በህመም የወጡ ቀናት: <span class="badge badge-danger ">3</span></small>
+                </div>
+                <div class="col-6">
+                    <p >ለመጨረሻ ጊዜ የተመዘገበ: </p> 
+                    <small>ቀሪ ቀን: <span class="badge badge-dark ">2011-04-20</span></small> <br>
+                    <small> የእረፍት ቀን: <span class="badge badge-dark ">2011-02-15</span></small> <br>
+                    <small>የህመም ቀን: <span class="badge badge-dark ">2011-01-20</span></small>
+                </div>
+               </div>
+             
+              
+                
+                  <!-- <div class="card text-dark border-dark mb-3 m-1" style="max-width: 18rem;">
                     <div class="card-header text-white bg-info">የተመዘገበ</div>
                     <div class="card-body">
                       <ul class="list-group border-success">
@@ -240,9 +203,9 @@
                         </li>
                       </ul>
                     </div>
-                  </div>
-                  <div class="card text-dark border-dark  mb-3 m-2" style="max-width: 18rem;">
-                    <div class="card-header text-white bg-info">ለመጨረሻ ጊዜ የተመዘገበ</div>
+                  
+                  <div class="card text-dark border-dark  mb-3 m-1" style="max-width: 18rem;">
+                    <div class="card-header text-white bg-info"></div>
                     <div class="card-body">
                       <ul class="list-group border-success">
                         <li
@@ -263,8 +226,8 @@
                       </ul>
                     </div>
                   </div>
-                </div>
-          </div>
+                </div> -->
+    
         </div>
       </div>
     </div>

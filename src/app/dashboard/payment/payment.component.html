@@ -127,12 +127,13 @@
             <br />
           </div>
           <hr />
-          <h6>አጠቃላይ ተጨማሪ: {{ addable }}</h6>
-          <h6>
-            አጠቃላይ ተቀናሽ:
-            <span class="text-danger">{{ total_deduction() || 0 }}</span>
+          <h6>አጠቃላይ ተጨማሪ: <span class="badge badge-dark">{{ addable }} ብር</span>
+          
+          <span class="float-right"> አጠቃላይ ተቀናሽ:
+              <span class="badge badge-dark">{{ total_deduction() || 0 }} ብር</span></span>
           </h6>
-          <h5>የተጣራ ወርሃዊ ክፍያ: {{ calcNet() || 0 }}</h5>
+        <hr>
+          <h5>የተጣራ ክፍያ: <span class="badge badge-dark">{{ calcNet() || 0 }} ብር</span> </h5>
         </div>
         <div class="col-1"></div>
         <div class="col-5">
@@ -181,10 +182,7 @@
           </div>
           <br>
           <h5 class="float-left">ቀሪ ቀናቶች</h5>
-          <br>
-          
-            
-              <div class="input-group mb-3">
+            <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1">ከ</span>
                 </div>
@@ -198,9 +196,11 @@
                   name="dp" [(ngModel)]="end_date" ngbDatepicker #c="ngbDatepicker" placement="bottom" (click)="c.toggle()">
               </div>
               <div class="date-count">
-                <p>የቀሪ ቀናት ብዛት: <span class="badge badge-danger">{{get_date_count() || 0}}</span> </p>
-         
-                <p>የሰዓታት ብዛት: {{hoursWasted || 0}}</p>
+                <br>
+                <p>የቀሪ ቀናት ብዛት: <span class="badge badge-dark">{{get_date_count() || 0}}</span> 
+                  <span class="float-right">የሰዓታት ብዛት: <span class="badge badge-dark">{{hoursWasted || 0}}</span></span>  </p>
+
+                <pre></pre>
               </div>
 
      
@@ -216,8 +216,10 @@
                 (input)= "penalityRate=$event.target.value"
               />
             </div>
-            <p>የቀሪ ቀናት ቅጣት: {{date_penality() || 0}} </p>
-            <p>የቀሪ ሰዓታት ቅጣት: {{hour_penality() || 0}}</p>
+            <p>የቀሪ ቀናት ቅጣት: <span class="badge badge-dark">{{date_penality() || 0}} ብር</span>
+             <span class="float-right">የቀሪ ሰዓታት ቅጣት:<span class="badge badge-dark"> {{hour_penality() || 0}} ብር</span></span>
+            </p>
+            <hr />
             <button class="btn btn-success m-1" (click)="savePayment()">
                 መዝግብ
               </button>
@@ -226,7 +228,7 @@
               </button>
 
           <br />
-          <hr />
+        
 
           <br />
         </div>

@@ -39,6 +39,7 @@ export class TimetrackComponent implements OnInit {
   formSubmitted: boolean = false; 
   model: NgbDateStruct;
   date: string;
+  private other: boolean;
 
   constructor(
     private calendar: NgbCalendar,
@@ -138,9 +139,33 @@ export class TimetrackComponent implements OnInit {
 
   // handle date entry
 
-  save(form: NgForm){
+  save(val: string){
+    this.other = false;
+    switch (val.trim()) {
+      case "ቀሪ መዝግብ":
+        console.log('absent date ')
+        break;
+      case "ሰዓት መዝግብ":
+      console.log('hour date ')
+        break;
+      case "ቀሪ (በህመም)":
+       
+        break;
+      case "የእረፍት ፈቃድ":
+        
+        break;
+      case "ኦቨር ታይም":
+        
+        break;
+      case "ሌላ ምክንያት":
+        this.other = true; 
+        break;
+    }  
 
   }
+
+  saveTime(){}
+  clear(){}
 
   isAbsent(form: NgForm) {
     
