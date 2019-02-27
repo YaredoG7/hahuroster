@@ -62,7 +62,7 @@ export class PaymentComponent implements OnInit {
   public closeResult: string;
 
   // to be retrived from selected employee
-  private grosspayment: number = 12000;
+  private grosspayment = 12000;
 
   constructor(
     private employeeRepo: EmployeeRepository,
@@ -109,6 +109,7 @@ export class PaymentComponent implements OnInit {
         curr = this.grosspayment * 0.35 - 1500;
         break;
     }
+   // console.log(curr)
     this.taxCalc = curr;
   }
 
@@ -123,7 +124,7 @@ export class PaymentComponent implements OnInit {
     } else {
       this.modalService.open(this.notify, { centered: true });
     }
-    // console.log(pen)
+    //console.log(pen)
     this.pension = pen;
   }
 
@@ -210,9 +211,9 @@ export class PaymentComponent implements OnInit {
       return hr_penality;  
     }
 
-  total_deduction() {
+  total_deduction(): number{
     let total = 0;
-    total = this.deduction + this.pension + this.taxCalc + this.date_penality() + this.hour_penality();
+    total = this.deduction + this.pension + this.taxCalc; // + this.date_penality() + this.hour_penality();
     return Number(total.toFixed(2));
   }
 
@@ -229,18 +230,20 @@ export class PaymentComponent implements OnInit {
 
   // save salary
   saveSalary(salary: Salary) {
+
     salary = new Salary(
-      "newEmp",
-      5000,
-      200,
-      100,
-      [{ reason: "absent days", amount: 150, qty: 5 }],
-      [{ reason: "over time", amount: 500, qty: 2 }],
-      400,
-      4000
+      "XCY123",
+      this.grosspayment,
+      this.taxCalc,
+      this.pension,
+      this.subsArray, 
+      this.addableArray,
+      this.total_deduction(),
+      this.calcNet()
+
     );
     console.log(salary);
-    this.repository.saveSalary(salary);
+  //  this.repository.saveSalary(salary);
   }
   
   clear() {

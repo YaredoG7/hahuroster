@@ -5,12 +5,32 @@
     </div>
   </div>
   <div class="row mt-2">
-    <div class="col-4 empDetail">
-      <div class="card border-dark mb-3" style="max-width: 25rem;">
-        <div class="card-header bg-transparent border-dark">የተመረጠው ሰራተኛ</div>
-        <div class="card-body text-dark">
-          <!-- Adding the details of the selected employee -->
-          <div class=" input-group mb-3">
+    <div class="col-6 ">
+    <p class="selected">የተመረጠው ሰራተኛ</p>
+
+    <div class="empDetail">
+      <div class="emp-photo mb-2">
+          <img src="{{url || '../../../assets/400.jpg'}}"> 
+     </div>
+   
+     <div class="upload-section">
+       <p>አዲስ ፎቶ ያስገቡ</p>
+       <input
+        class="mt-2"
+        name="emp_img"
+        style="display: none"
+        type="file" (change)="onFileChanged($event)"
+        #fileInput>
+        <button  class="btn btn-outline-info text-dark mt-2" (click)="fileInput.click()">ፎቶ ምረጥ</button>
+
+        <div class="progress mt-2">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuemin="0" aria-valuemax="100">20%</div>
+          </div>
+        <button class="btn btn-outline-success text-dark mt-2" type="button" (click)="onUpload()">አስገባ</button> 
+     </div>
+      
+     <div class="emp-fields">
+        <div class=" input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">
                 <i class="fa fa-user fa-x"></i
@@ -24,8 +44,52 @@
               [(ngModel)]="selectedEmployee?.fullName || display"
             />
           </div>
-          <!-- Adding the second employee attribute -->
           <div class=" input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-phone-square fa-x"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                readonly
+                class="form-control bg-white"
+                placeholder="ሞባይል ስልክ"
+                [(ngModel)]="selectedEmployee?.mobilePhone || display"
+              />
+            </div>
+            <div class=" input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-location-arrow fa-x"></i
+                  ></span>
+                </div>
+                <input
+                  type="text"
+                  readonly
+                  class="form-control bg-white"
+                  placeholder="አድራሻ"
+                  [(ngModel)]="selectedEmployee?.address || display"
+                />
+              </div>
+              <div class=" input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-envelope fa-x"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control bg-white"
+                    placeholder="ኢሜል "
+                    [(ngModel)]="selectedEmployee?.emrContactPhone || display"
+                  />
+                </div>
+
+     </div>
+     <div class="emp-fields-2">
+        <div class=" input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">
                 <i class="fa fa-id-badge fa-x"></i
@@ -39,106 +103,73 @@
               [(ngModel)]="selectedEmployee?.empId || display"
             />
           </div>
-
-          <!-- Adding the third employee attribute -->
           <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-phone-square fa-x"></i
-              ></span>
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-briefcase fa-x"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                readonly
+                class="form-control bg-white"
+                placeholder="ስራ ሀላፊነት"
+                [(ngModel)]="selectedEmployee?.position || display"
+              />
             </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ሞባይል ስልክ"
-              [(ngModel)]="selectedEmployee?.mobilePhone || display"
-            />
-          </div>
-
-          <!-- Adding the 4th employee attribute -->
-          <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-briefcase fa-x"></i
-              ></span>
-            </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ስራ ሀላፊነት"
-              [(ngModel)]="selectedEmployee?.position || display"
-            />
-          </div>
-          <!-- Adding the 5th employee attribute -->
-          <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-location-arrow fa-x"></i
-              ></span>
-            </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="አድራሻ"
-              [(ngModel)]="selectedEmployee?.address || display"
-            />
-          </div>
-          <!-- Adding the 6th employee attribute -->
-          <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-user-plus fa-x"></i
-              ></span>
-            </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ተያዥ-ተጠሪ "
-              [(ngModel)]="selectedEmployee?.emrContactName || display"
-            />
-          </div>
-
-          <!-- Adding the 7th employee attribute -->
-          <div class=" input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fa fa-phone-square fa-x"></i
-              ></span>
-            </div>
-            <input
-              type="text"
-              readonly
-              class="form-control bg-white"
-              placeholder="ተያዥ-ተጠሪ ስልክ"
-              [(ngModel)]="selectedEmployee?.emrContactPhone || display"
-            />
-          </div>
-        </div>
-        <div class="card-footer bg-transparent border-dark">
-          <button
-            class="btn btn-sm btn-warning"
+            <div class=" input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-user-plus fa-x"></i
+                  ></span>
+                </div>
+                <input
+                  type="text"
+                  readonly
+                  class="form-control bg-white"
+                  placeholder="ተያዥ-ተጠሪ "
+                  [(ngModel)]="selectedEmployee?.emrContactName || display"
+                />
+              </div>
+              <div class=" input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-phone-square fa-x"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control bg-white"
+                    placeholder="ተያዥ-ተጠሪ ስልክ"
+                    [(ngModel)]="selectedEmployee?.emrContactPhone || display"
+                  />
+                </div>
+      </div>
+    </div>
+         <button
+            class="btn btn-md btn-outline-warning mr-2 text-dark"
             [routerLink]="['/dashboard/employees/edit', selectedEmployee?.id || display]"
           >
           ቀይር
           </button>
           <!--  (click)="deleteEmployee(selectedEmployee?.id || display)" -->
           <button
-            class="btn btn-sm btn-danger"
+            class="btn btn-md btn-outline-danger text-dark"
             (click)="openVerticallyCentered(content)"
            
           >
           አጥፋ
           </button>
-        </div>
-      </div>
+
+
+
+
+
     </div>
-    <div class="col-8 ">
+    <div class="col-6 ">
       <div class="showTable">
-        <table class="table table-sm table-striped table-dark table-hover">
+        <table class="table table-sm table-striped  table-hover">
           <thead>
             <tr>
               <th>መለያ ቁጥር</th>
@@ -159,17 +190,50 @@
           </tbody>
         </table>
       </div>
-      <button class="btn btn-success" routerLink="/dashboard/employees/create">
+      <button class="btn btn-outline-success text-dark mt-2" routerLink="/dashboard/employees/create">
         አዲስ መዝግብ
       </button>
+      
+      <div class="card card-body daily-feed mt-3">
+        
+          <ngb-tabset #t="ngbTabset">
+              <ngb-tab id="tab-selectbyid1">
+                <ng-template ngbTabTitle> ወርቃማ ኮከብ</ng-template>
+                <ng-template ngbTabContent>
+                 <div>
+                  <br>
+                  <p>ስም: <span class="badge badge-success text-white mt-3">{{selectedEmployee?.fullName || 'አለተመረጠም'}}</span> </p>
+                  <p>ቀን: <span class="badge badge-success text-white mt-1 ">{{ethio_date || 'አለተመረጠም'}}</span> </p>
+                  <h2><ngb-rating [(rate)]="currentRate" class="star"></ngb-rating> </h2>
+                   
+                    <pre>ብዛት: <b>{{currentRate}}</b></pre>
+              
+                    <button class="btn btn-sm btn-outline-success mr-2">አዎ!</button>
+                    <button class="btn btn-sm btn-outline-danger  mr-2" (click)="currentRate=0">ባዶ!</button>
+                    
+                 </div>  
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab id="tab-selectbyid2">
+                <ng-template ngbTabTitle>ምንድን ናቸው?</ng-template>
+                <ng-template ngbTabContent>
+                  <div class="mt-2" style="padding:20px 20px">
+                      <p> ጥሩ ስራን ለማድነቅ ወይም ለየት ያለ ብቃትን ለመመዝገብ  በእነዚህ ክዋክብት ከአስሩ ያስገብ:
+                          በወሩ መጨረሻ ላይ ሰራተኛው በአጠቃላይ ያገኛቸውን ክዋክብት ማየት ይችላሉ::
+                          <br>
+                         ለምሳሌ እነዚህ ለቲፕ ምዝገባ፣ ኮሚሽን ወይም ለማነኛውም ትንንሽ ነገሮች መጠቀም ይቻላል::
+                         የአንድ ኮኮብ ዋጋ ካስገቡ፣ ይህ መረጃ ወድ ክፍያ ገጽ መላክ ይችላሉ
+                    </p>
+                  </div>
+                 
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
     </div>
   </div>
 </div>
 
-<div>
-  <img src="{{selectedUser}}" alt="">
-  
-</div>
+
 
 
 

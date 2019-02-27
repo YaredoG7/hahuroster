@@ -53,17 +53,15 @@ export class TimetrackComponent implements OnInit {
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     this.config.spinners = false;
-
   }
 
-  ngOnInit() {
-
-   
-    
-  }
+  ngOnInit() { }
 
   dateSelected(): string{
     return this.model.year+'-'+this.model.month+'-'+this.model.day;
+  }
+  timeSelected(): string{
+    return this.time.hour+':'+this.time.minute;
   }
 
   // trying to work with the time element
@@ -109,10 +107,6 @@ export class TimetrackComponent implements OnInit {
     this.model = this.calendar.getToday();
   }
 
-  isAnswerProvided() {
-    console.log(this.disabled);
-  }
-
   getSalaries (){
 
   }
@@ -137,16 +131,42 @@ export class TimetrackComponent implements OnInit {
     // console.log(this.employee)
   }
 
-  // handle date entry
+  // prepare time track based on different selections
 
-  save(val: string){
+  get_timetrack(input?: any, input1?:any, input2?: any, input3?: any, input4?: any, input5?:any){
+    return new TimeTrack(
+      this.employee.id, 
+      this.employee.empId, 
+      this.employee.fullName, 
+      input, //Absent date   
+      input1, //Sick date
+      input2, //Hoildays
+      input3, //Latetime
+      input4, //Overtime  
+      input5 , //Comment
+    )
+  }
+
+  // handle date entry
+  val: string;
+  save(){
     this.other = false;
-    switch (val.trim()) {
+    let comment = '';
+    switch (this.val.trim()) {
       case "ቀሪ መዝግብ":
-        console.log('absent date ')
+      let date_update = '';
+      if(this.model !== undefined ){
+        date_update = this.dateSelected();
+      }
+      this.timetrackRepo.saveNewAbsent(this.get_timetrack(date_update)); 
         break;
       case "ሰዓት መዝግብ":
-      console.log('hour date ')
+      let time_update = '';
+      if (this.time !== undefined){
+        time_update = this.timeSelected();
+      }
+      //console.log(time_update);
+      this.timetrackRepo.hoursWasted(this.get_timetrack('','','', time_update));
         break;
       case "ቀሪ (በህመም)":
        
@@ -160,7 +180,7 @@ export class TimetrackComponent implements OnInit {
       case "ሌላ ምክንያት":
         this.other = true; 
         break;
-    }  
+    }
 
   }
 

@@ -32,24 +32,27 @@ export class TimeTrackRepository{
     }
 
     saveNewAbsent(timetrack: TimeTrack){
-      
         // for saving the absentees
        this.dataSource.saveNewAbsent(timetrack).subscribe((resp) => {
         this.timetracks.push(resp.body); 
         if(resp.status == 200){
          this.notificationService.success('መረጃው በተሳካ ሁኔታ ተመዝግቧል')
         } }, error => {
-         this.notificationService.error('ያልተሳካ ምዝገባ ' + error); 
+         this.notificationService.error('ያልተሳካ ምዝገባ ' + error.message); 
          console.log(error); 
      });
         }
 
      hoursWasted(timetrack:TimeTrack){
-            this.dataSource.hoursWasted(timetrack).subscribe(tr => {
-                this.timetracks.splice(this.timetracks.findIndex(tr => tr.id == timetrack.id), 1, timetrack)
+            this.dataSource.hoursWasted(timetrack).subscribe((resp) => {
+              console.log(timetrack);
+            this.timetracks.splice(this.timetracks.findIndex(tr => tr.id == resp.body.id), 1, timetrack); 
+            if(resp.status == 200){
+              this.notificationService.success('መረጃው በተሳካ ሁኔታ ተመዝግቧል')
+            } }, error => {
+             this.notificationService.error('ያልተሳካ ምዝገባ ' + error.message); 
+             console.log(error); 
              }); 
-            //throw error
-            console.log("throw error")
     }
 
     overTime(timetrack: TimeTrack){

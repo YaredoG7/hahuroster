@@ -40,6 +40,23 @@ export class RestDataSource{
        
     }
 
+    // fb auth 
+
+    fbAuth():Observable<HttpResponse<boolean>>{
+
+        return this.http.get<any>('http://127.0.0.1:3000/oauth/facebook', {observe: 'response'})
+                        .pipe(catchError(this.handleError));
+    }
+
+    subs(){
+    this.fbAuth().subscribe((resp) => {
+        console.log('getting response ... ')
+        console.log(resp)
+    }, error => {
+
+    })
+}
+
     // get users 
 
     getUsers(): Observable<HttpResponse<any>>{
@@ -76,13 +93,14 @@ export class RestDataSource{
    // inserts new date to the absent array 
 
    saveNewAbsent(timetrack): Observable<HttpResponse<TimeTrack>>{
+       
        return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/absent/${timetrack.id}` , timetrack, { observe: 'response' })
    }
 
    // register all the hours that has been missued
 
-   hoursWasted(timetrack): Observable<TimeTrack>{
-    return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/late/${timetrack.id}` , timetrack, this.getOptions())
+   hoursWasted(timetrack): Observable<HttpResponse<TimeTrack>>{
+    return this.http.put<TimeTrack>(`${this.baseUrl}timetrack/late/${timetrack.id}` , timetrack, { observe: 'response' })
    }
 
    // register over time
@@ -119,7 +137,7 @@ getSalaries(): Observable<Salary[]>{
 // save new salary details
 
 saveSalary(salary: Salary): Observable<Salary>{
-    console.log("I got " + salary.empId); 
+  //  console.log("I got " + salary.empId); 
     return this.http.post<Salary>(this.baseUrl + "salaries", salary);
 }
 
@@ -130,7 +148,7 @@ saveSalary(salary: Salary): Observable<Salary>{
             "Authorization": `Bearer<${this.auth_token}>`
         })
 
-        console.log(headers)
+        // console.log(headers)
 
         return {
             headers: new HttpHeaders({

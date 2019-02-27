@@ -91,7 +91,7 @@
             <div class="input-group" >
                 <div class="input-group-prepend">
                   <div class="input-group-text border-success">
-                    <input  [(ngModel)]="disabled" (change)="isAnswerProvided($event)"
+                    <input  [(ngModel)]="disabled" 
                      type="checkbox" aria-label="Checkbox for following text input">
                      <span>ሰዓት</span>
                   </div>
@@ -107,7 +107,7 @@
             <div class=" input-group " >
                 <div class="input-group-prepend">
                   <span class="input-group-text"> ምን?</span>
-                 <select class="custom-select mr-sm-2" (input)="save($event.target.value)">
+                 <select class="custom-select mr-sm-2" (input)="val=$event.target.value">
                   <option selected>ምረጥ</option>
                   <option>ቀሪ መዝግብ</option>
                   <option>ሰዓት መዝግብ</option>
@@ -137,7 +137,7 @@
                 </div>
           </div>  
           <br>
-            <button class="btn btn-success m-1" (click)="saveTime()">
+            <button class="btn btn-success m-1" (click)="save()">
                 መዝግብ
               </button>
               <button class="btn btn-warning m-1" (click)="clear()">

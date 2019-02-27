@@ -2,12 +2,25 @@ import { Component } from '@angular/core';
 import { Employee } from '../../model/employee.model';
 import { EmployeeRepository } from '../../model/employee.repository';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {FileUploadService} from '../../model/file-upload.service';
+import {NgbDatepickerI18nEth} from '../../model/ethcalendar.service';
+import {
+  NgbCalendar,
+  NgbDate,
+  NgbDatepickerI18n,
+  NgbCalendarPersian,
+  NgbDateStruct
+} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',
-  styleUrls: ['./employees.component.css']
+  styleUrls: ['./employees.component.scss'], 
+  providers: [
+    {provide: NgbCalendar, useClass: NgbCalendarPersian},
+    {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nEth}
+  ]
 })
 export class EmployeesComponent {
   selectedEmployee: Employee;
@@ -15,12 +28,37 @@ export class EmployeesComponent {
   display: string;
   isSelected: string; 
   deleteEmp: boolean; 
+  url: any;
+  currentRate = 8;
+  ethio_date: any;
 
-  constructor(private repository: EmployeeRepository, private modalService: NgbModal) {
+  constructor(private repository: EmployeeRepository, private modalService: NgbModal,  private ethCal: NgbDatepickerI18nEth,
+    private fsUpload: FileUploadService, private calendar: NgbCalendar,) {
     this.selectedEmployee = new Employee(0);
     this.display = '';
     this.deleteEmp = false; 
-    this.getUser();
+    let date = this.calendar.getToday();
+    
+    this.ethio_date = this.ethCal.getDayAriaLabel(new NgbDate(date.year, date.month, date.day+2));
+  }
+
+  selectedFile: File
+
+  onFileChanged(event:any){
+    if (event.target.files && event.target.files[0]){
+      this.selectedFile = event.target.files[0]
+      var reader = new FileReader(); 
+      reader.readAsDataURL(this.selectedFile); 
+      reader.onload = (event:any) => {
+        this.url = event.target.result;
+      }
+    }   
+  }
+  onUpload(){
+    const uploadData = new FormData();
+    uploadData.append('emp_img', this.selectedFile, this.selectedFile.name);
+    this.fsUpload.uploadFile(uploadData);
+
   }
 
   getEmployees(): Employee[] {
@@ -56,8 +94,6 @@ export class EmployeesComponent {
   getDepartment(): string[] {
     return this.repository.getDepartment();
   }
-
-  
 
   // modal 
 

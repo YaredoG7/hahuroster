@@ -8,11 +8,12 @@ import {TimeTrackRepository} from "./timetrack.repository";
 import {SalaryRepository} from "./salary.repository"; 
 import {NotificationService} from '../notification/notification.service'; 
 import {NgbDatepickerI18nEth} from './ethcalendar.service';
+import {FileUploadService} from './file-upload.service'
 
 @NgModule({
     imports: [HttpClientModule], 
     providers: [ StaticDataSource, NotificationService, 
                {provide: StaticDataSource, useClass: RestDataSource}, 
-    RestDataSource, AuthService, EmployeeRepository, TimeTrackRepository, SalaryRepository, NgbDatepickerI18nEth]
+    RestDataSource, AuthService, EmployeeRepository, TimeTrackRepository, SalaryRepository, NgbDatepickerI18nEth, FileUploadService]
 })
 export class ModelModule{}

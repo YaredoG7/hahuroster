@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   public admin: boolean; 
   public user: string;
 
-  constructor(private router: Router, private auth: AuthService, private modalService: NgbModal) {
+  constructor(private router: Router, private auth: AuthService, private modalService: NgbModal, ) {
     this.admin = true; 
    // this.user = 'አስተዳደር'; 
   }
@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
   }
 
 
-  
   // modal 
 
   closeResult: string;

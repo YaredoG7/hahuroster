@@ -18,10 +18,10 @@ export class EmployeeRepository {
         dataSource.getEmployees().subscribe((resp) => {
            this.employees = resp.body; 
            if(resp.status == 200){
-            this.notificationService.success('All employees has been retrived')
+          //  this.notificationService.success('All employees has been retrived')
            } }, error => {
             this.notificationService.error(error); 
-            console.log(error); 
+         //   console.log(error); 
         });
 
         dataSource.getTimeTracks().subscribe(timetrack => {
@@ -47,10 +47,8 @@ export class EmployeeRepository {
 
   // get employees by ID -- which can be handy while editing and deleteing
 
-    getEmployee(id:number){
-        
+    getEmployee(id:number){   
         return this.employees.find(em => em.id == id); 
-        
     }
     getDepartment(): string[]{
         return this.departments; 
@@ -62,7 +60,7 @@ export class EmployeeRepository {
             employee.id = this.generateID(); 
             this.dataSource.saveEmployee(employee).subscribe((resp) =>{
                 this.employees.push(resp.body)
-                    this.notificationService.success('Saved successfully')
+                    this.notificationService.success('መረጃዉ በተሳካ ሁኔታ ተመዝግቧል')
                     setTimeout(()=>{
                         this.router.navigateByUrl("/dashboard/employees"); 
                       }, 5000)
@@ -80,7 +78,7 @@ export class EmployeeRepository {
         } else {
             this.dataSource.updateEmployee(employee).subscribe((resp) =>{
                 this.employees.push(resp.body)
-                    this.notificationService.success('Upated successfully')
+                    this.notificationService.success('መረጃዉ በተሳካ ሁኔታ ተስተካክሏል')
                     setTimeout(()=>{
                         this.router.navigateByUrl("/dashboard/employees"); 
                       }, 5000)
@@ -103,7 +101,7 @@ export class EmployeeRepository {
 
     deleteEmployee(id:number){
         this.dataSource.deleteEmployee(id).subscribe((resp) =>{
-            this.notificationService.success('Deleted successfully')
+            this.notificationService.success('መረጃዉ ከዳታ ቤዝ ተሰርዝዋል')
             this.employees.splice(this.employees.findIndex(resp => resp.id == id), 1);
         }, error => {
             this.notificationService.error(error)
