@@ -1,11 +1,18 @@
 .alert-danger{
     background-color: rgb(248, 73, 73); 
+    color: white;
 }
 
 .alert-success{
     background-color: rgb(58, 165, 58); 
 }
 
-#notification-content{
-   
+.alert-warning {
+    background-color: darkgoldenrod;
+    color: white;
+}
+
+.alert-info {
+    background-color: rgb(75, 79, 80);
+    color: white;
 }

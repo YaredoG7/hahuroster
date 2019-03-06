@@ -10,7 +10,7 @@
 
     <div class="empDetail">
       <div class="emp-photo mb-2">
-          <img src="{{url || '../../../assets/400.jpg'}}"> 
+          <img src="{{url || './assets/H.png'}}"> 
      </div>
    
      <div class="upload-section">
@@ -208,8 +208,8 @@
                    
                     <pre>ብዛት: <b>{{currentRate}}</b></pre>
               
-                    <button class="btn btn-sm btn-outline-success mr-2">አዎ!</button>
-                    <button class="btn btn-sm btn-outline-danger  mr-2" (click)="currentRate=0">ባዶ!</button>
+                    <button class="btn btn-sm btn-outline-success mr-2" (click)="register()">አዎ!</button>
+                    <button class="btn btn-sm btn-outline-danger  mr-2" (click)="cancel()">ባዶ!</button>
                     
                  </div>  
                 </ng-template>
@@ -259,7 +259,7 @@
       <button
         type="button"
         class="btn text-white bg-success"
-        (click)="handleModal(true)"
+        (click)="handleModal(false)"
       >
         መዝግብ
       </button>

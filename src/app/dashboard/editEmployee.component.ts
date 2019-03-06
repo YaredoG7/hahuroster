@@ -61,8 +61,9 @@ export class EditEmployeeComponent{
             save(form: NgForm){
                 this.formSubmitted = true; 
                 if (form.valid){
-                    this.timetrack = new TimeTrack(this.employee.id, this.employee.empId)
-                    this.repository.saveEmployee(this.employee); 
+                  //  this.timetrack = new TimeTrack(this.employee.id, this.employee.empId)
+                  //  this.repository.saveEmployee(this.employee); 
+                  this.notificationService.error('አዲስ መረጃ ለመመዝገብ እባክዎ የሙከራ ይለፍ ቃል ይጠይቁ!');
                     form.reset(); 
                     this.formSubmitted = false;
 

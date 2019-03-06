@@ -1,4 +1,4 @@
-import {Component,OnInit, Injectable} from '@angular/core';
+import {Component} from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Employee } from '../../model/employee.model';
 import { TimeTrack } from '../../model/timeTrack.model';
@@ -7,6 +7,7 @@ import { EmployeeRepository } from '../../model/employee.repository';
 import {NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from "@angular/forms"; 
 import {NgbDatepickerI18nEth} from '../../model/ethcalendar.service';
+import { NotificationService} from '../../notification/notification.service';
 import {
   NgbCalendar,
   NgbDate,
@@ -27,9 +28,9 @@ import {
 })
 
 
-export class TimetrackComponent implements OnInit {
+export class TimetrackComponent {
 
-  private sickTime: string [] = [];
+  sickTime: string [] = [];
   displayMonths = 2;
   time = { hour: 1, minute: 1 };
   disabled: boolean;
@@ -39,11 +40,12 @@ export class TimetrackComponent implements OnInit {
   formSubmitted: boolean = false; 
   model: NgbDateStruct;
   date: string;
-  private other: boolean;
+  other: boolean;
 
   constructor(
     private calendar: NgbCalendar,
     private employeeRepo: EmployeeRepository,
+    private notificationService: NotificationService,
     private timetrackRepo: TimeTrackRepository,
     private modalService: NgbModal, 
     private config: NgbTimepickerConfig
@@ -54,8 +56,6 @@ export class TimetrackComponent implements OnInit {
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     this.config.spinners = false;
   }
-
-  ngOnInit() { }
 
   dateSelected(): string{
     return this.model.year+'-'+this.model.month+'-'+this.model.day;
@@ -74,9 +74,8 @@ export class TimetrackComponent implements OnInit {
     let val: string [];
     this.timetrackRepo.getTimeTracks().filter(tm => {
       val = tm.absentDates.toString().split(',');
-    //this.indexes(tm.absentDates.toString(), "2011-05");
      })
-     console.log('selected date '+date);
+
       for (let i = 0; i < val.length; i++){
       var found = val[i].match(date); 
      
@@ -95,7 +94,6 @@ export class TimetrackComponent implements OnInit {
       .result.then(
         result => {
           this.closeResult = `Closed with: ${result}`;
-          console.log(result);
         },
         reason => {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -112,13 +110,10 @@ export class TimetrackComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      console.log(reason);
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      console.log(reason);
       return 'by clicking on a backdrop';
     } else {
-      console.log(reason);
       return `with: ${reason}`;
     }
   }
@@ -184,30 +179,10 @@ export class TimetrackComponent implements OnInit {
 
   }
 
-  saveTime(){}
-  clear(){}
-
-  isAbsent(form: NgForm) {
-    
-    /*
-    const date = this.dateYear+'-'+this.dateMonth+'-'+this.dateDay;
-    this.timetrack = new TimeTrack(
-      this.employee.id, this.employee.empId, date);
-      this.formSubmitted = true;
-
-    if(form.valid && !this.monthFlow && !this.dayFlow){ 
-      this.timetrackRepo.saveNewAbsent(this.timetrack);
-      this.formSubmitted = false; 
-      this.employee = new Employee(0); 
-      form.reset(); 
-    }
-    */
-   this.date = this.model.year + '-'+ this.model.month + '-' + this.model.day
-   this.timetrack = new TimeTrack(this.employee.id, '', '', this.date)
-   this.timetrackRepo.saveNewAbsent(this.timetrack);
-
-
+  saveTime(){
+    this.notificationService.info('አዲስ መረጃ ለመመዝገብ እባክዎ የሙከራ ይለፍ ቃል ይጠይቁ!');
   }
+  clear(){}
 
   hoursWasted() {
 
@@ -222,21 +197,6 @@ export class TimetrackComponent implements OnInit {
     this.date = this.model.year + '-'+ this.model.month + '-' + this.model.day
     this.timetrack = new TimeTrack(this.employee.id, '', '', '', this.date)
     this.timetrackRepo.sickLeave(this.timetrack);
-  }
-
-  check(){
-   // this.monthFlow = false;
-   // if (this.dateMonth > 12){
-   //   this.monthFlow = true;
-   // } 
-   
-  }
-  checkTwo(){
-    // this.dayFlow = false;
-    // if (this.dateDay > 30){
-    //   this.dayFlow = true;
-    // } 
-   
   }
 
   insertHoliday() {

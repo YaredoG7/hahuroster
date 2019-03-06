@@ -4,6 +4,7 @@ import { EmployeeRepository } from '../../model/employee.repository';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {FileUploadService} from '../../model/file-upload.service';
 import {NgbDatepickerI18nEth} from '../../model/ethcalendar.service';
+import { NotificationService} from '../../notification/notification.service';
 import {
   NgbCalendar,
   NgbDate,
@@ -32,8 +33,12 @@ export class EmployeesComponent {
   currentRate = 8;
   ethio_date: any;
 
-  constructor(private repository: EmployeeRepository, private modalService: NgbModal,  private ethCal: NgbDatepickerI18nEth,
-    private fsUpload: FileUploadService, private calendar: NgbCalendar,) {
+  constructor(private repository: EmployeeRepository, 
+    private modalService: NgbModal,
+    private notificationService: NotificationService,  
+    private ethCal: NgbDatepickerI18nEth,
+    private fsUpload: FileUploadService, 
+    private calendar: NgbCalendar) {
     this.selectedEmployee = new Employee(0);
     this.display = '';
     this.deleteEmp = false; 
@@ -55,10 +60,25 @@ export class EmployeesComponent {
     }   
   }
   onUpload(){
+    /*
     const uploadData = new FormData();
     uploadData.append('emp_img', this.selectedFile, this.selectedFile.name);
-    this.fsUpload.uploadFile(uploadData);
+    this.fsUpload.uploadFile(uploadData); 
+    */
+   this.notificationService.info('ፎቶ ወደ ዳታቤዝ ለመመዝገብ መልዕክት ይላኩለን!')
+  }
 
+  register() {
+    if (!this.selectedEmployee.fullName){
+      this.notificationService.error('የተመረጠ ሰራተኛ የለም!')
+    } else {
+     this.notificationService.success(` ${ this.selectedEmployee.fullName } `+  ` ${ this.currentRate } ` + 'የአድናቆት ኮከብ ተመዝግቦለታል')
+    }
+  
+  }
+
+  cancel() {
+    this.notificationService.error('አልተመዘገበም');
   }
 
   getEmployees(): Employee[] {
@@ -69,15 +89,6 @@ export class EmployeesComponent {
 
   getSelectedEmp(emp: Employee) {
     this.selectedEmployee = emp;
-  }
-
-  getUser(){
-    this.repository.getUsers().subscribe((resp) => {
-      this.selectedUser = resp.body[2].providerData.picture.data.url
-      console.log('got user ' + resp.body[2].firstName)
-    }, error => {
-      console.log('error occured')
-    })
   }
 
   // get selected employee
@@ -105,11 +116,9 @@ export class EmployeesComponent {
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
-          console.log(this.closeResult);
         },
         (reason) => {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          console.log(this.closeResult);
         }
       );
   }
@@ -130,6 +139,7 @@ export class EmployeesComponent {
       this.deleteEmp = true;  
       this.deleteEmployee(this.selectedEmployee.id); 
     } else {
+      this.notificationService.info('አዲስ መረጃ ለመመዝገብ እባክዎ የሙከራ ይለፍ ቃል ይጠይቁ!');
       this.modalService.dismissAll(); 
       this.deleteEmp = false;  
     }

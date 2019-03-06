@@ -3,6 +3,8 @@ import { AuthService } from '../../model/auth.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService} from '../../notification/notification.service';
+import {HahuNotification, INotify} from '../../model/notification'; 
 
 
 @Component({
@@ -10,21 +12,24 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
   public username: string;
   public password: string;
   public errorMessage: string;
   public admin: boolean; 
   public user: string;
+  public notification: INotify; 
 
-  constructor(private router: Router, private auth: AuthService, private modalService: NgbModal, ) {
+  constructor(private router: Router, 
+    private notificationService: NotificationService,
+    private auth: AuthService, 
+    private modalService: NgbModal, ) {
     this.admin = true; 
-   // this.user = 'አስተዳደር'; 
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit(){
+    this.subscribeToNotification(); 
+   }
 
   // modal 
 
@@ -36,15 +41,25 @@ export class LoginComponent implements OnInit {
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
-          console.log(this.closeResult);
         },
         (reason) => {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          console.log(this.closeResult);
         }
       );
   }
 
+  subscribeToNotification(): void {
+    this.notification = new HahuNotification; 
+    this.notificationService
+      .getNotification()
+      .subscribe(notification =>{
+        this.notification = notification; 
+      }); 
+  }
+
+  notify() {
+  this.notificationService.warning('ፕሮግራሙን በነፃ ለመሞከር እባክዎን መልክት ይላኩለን')
+  }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -55,6 +70,9 @@ export class LoginComponent implements OnInit {
     }
   }
   
+  displayNotification(): boolean {
+    return this.notification.message.length > 0; 
+  }
   
   openVerticallyCentered(content, user: boolean) {
     if(user){
@@ -75,7 +93,6 @@ export class LoginComponent implements OnInit {
         .authenticate(this.username, this.password)
         .subscribe(response => {
           if (response) {
-            console.log('got res ' + response); 
             this.router.navigateByUrl('/dashboard/main');
             this.modalService.dismissAll();
           } else {

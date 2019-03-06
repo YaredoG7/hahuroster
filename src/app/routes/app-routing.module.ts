@@ -27,22 +27,22 @@ const routes: Routes = [
       {
         path: "dashboard",
         component: DashboardComponent,
-        // canActivate: [AuthGuard], 
+        canActivate: [AuthGuard], 
          children: [
          {
           path: "main",
           component: MainComponent,
-          // canActivate: [AuthGuard],
+          canActivate: [AuthGuard],
          }, 
          {
           path: "employees", 
           component: EmployeesComponent, 
-         // canActivate: [AuthGuard],
+          canActivate: [AuthGuard],
          }, 
          {
           path: "employees/:mode/:id", 
           component: EditEmployeeComponent, 
-        //  canActivate: [AuthGuard],
+          canActivate: [AuthGuard],
         }, 
         {
           path: "employees/:mode", 
@@ -51,17 +51,17 @@ const routes: Routes = [
         {
           path: "timetrack", 
           component: TimetrackComponent, 
-        //  canActivate: [AuthGuard],
+          canActivate: [AuthGuard],
         }, 
         {
           path: "payment", 
           component: PaymentComponent, 
-         // canActivate: [AuthGuard],
+          canActivate: [AuthGuard],
         },
         {
           path: "reports", 
           component: ReportsComponent, 
-         // canActivate: [AuthGuard],
+          canActivate: [AuthGuard],
         }
        
        ]

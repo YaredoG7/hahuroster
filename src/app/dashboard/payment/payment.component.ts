@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit, Injectable } from "@angular/core";
+import { Component, ViewChild, ElementRef} from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Salary } from "../../model/salary.model";
 import { SalaryRepository } from "../../model/salary.repository";
@@ -25,44 +25,44 @@ import { TimeTrack } from 'src/app/model/timeTrack.model';
     {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nEth}
   ]
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent {
   @ViewChild("notify") notify: ElementRef;
 
   /** Variables for calculation of payment **/
-  private deduction: number = 0;
-  private pension: number = 0;
-  private taxCalc: number = 0;
-  private addable: number = 0;
+  public deduction: number = 0;
+  public pension: number = 0;
+  public taxCalc: number = 0;
+  public addable: number = 0;
 
   /** Variables used for custom addable or deductions **/
-  private reason: string;
-  private percent: number;
-  private amount: number;
+  public reason: string;
+  public percent: number;
+  public amount: number;
 
   /** Variables used for creating creating table for addable and deduction **/
-  private addableArray: Array<any> = [];
-  private subsArray: Array<any> = [];
-  private newAttribute: any = {};
+  public addableArray: Array<any> = [];
+  public subsArray: Array<any> = [];
+  public newAttribute: any = {};
 
   /** Dynamic value update based on selection **/
-  private toCalulate: string;
-  private deductActive: boolean;
+  public toCalulate: string;
+  public deductActive: boolean;
 
   /** Absent penality variables  **/
-  private absentDates: number = 4; 
-  private hoursWasted: string = '03:80';
-  private absentPenality: number; 
-  private hourPenality: number ;
-  private penalityRate: number;
-  private start_date: NgbDateStruct; 
-  private end_date: NgbDateStruct; 
+  public absentDates: number = 4; 
+  public hoursWasted: string = '03:80';
+  public absentPenality: number; 
+  public hourPenality: number ;
+  public penalityRate: number;
+  public start_date: NgbDateStruct; 
+  public end_date: NgbDateStruct; 
 
   public salary: Salary;
   public employee: Employee;
   public closeResult: string;
 
   // to be retrived from selected employee
-  private grosspayment = 12000;
+  public grosspayment = 12000;
 
   constructor(
     private employeeRepo: EmployeeRepository,
@@ -72,8 +72,6 @@ export class PaymentComponent implements OnInit {
   ) {
     this.employee = new Employee(1);
   }
-
-  ngOnInit() {}
 
   // get searched employee
 
@@ -242,8 +240,6 @@ export class PaymentComponent implements OnInit {
       this.calcNet()
 
     );
-    console.log(salary);
-  //  this.repository.saveSalary(salary);
   }
   
   clear() {
@@ -272,15 +268,6 @@ export class PaymentComponent implements OnInit {
         }
       );
   }
-
-  isAnswerProvided() {
-    // this.extras.push(this.reason, this.percent, this.amount);
-    console.log(this.reason, this.percent, this.amount);
-  }
-
-  // add extra sub and add
-
-  getExtra() {}
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {

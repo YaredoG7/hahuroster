@@ -30,13 +30,6 @@ export class DashboardComponent implements OnInit {
             this.notification = notification; 
           }); 
       }
-      dummyMessage(){
-        this.notificationService.error('The notification works')
-        setTimeout(()=>{
-          this.notificationService.resetNotification(); 
-        }, 3000); 
-       
-      }
   
     
       displayNotification(): boolean {
@@ -51,10 +44,5 @@ export class DashboardComponent implements OnInit {
     logout(){
         this.auth.clear(); 
         this.router.navigateByUrl("/");
-    }
-
-    getStyle(){
-      return "bg-success"
-    }
-   
+    }   
 }

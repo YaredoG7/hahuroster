@@ -67,7 +67,7 @@ export class EmployeeRepository {
                      
             }, error => {
                 this.notificationService.error(error);
-                console.log("The whole response is " + error)
+           
               //  console.log("Recieved error from back ..." + error.response)
             });  
             // register time track for registered employee 

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent {
 
   constructor() { }
 
@@ -26,7 +26,7 @@ export class ReportsComponent implements OnInit {
   public doughnutChartData = [120, 150, 180, 90];
   public doughnutChartType = 'doughnut';
 
-  public radarChartLabels = ['Q1', 'Q2', 'Q3', 'Q4'];
+  public radarChartLabels = ['ሩብ ዓ-1', 'ሩብ ዓ-2', 'ሩብ ዓ-3', 'ሩብ ዓ-4'];
   public radarChartData = [
     {data: [120, 130, 180, 70], label: '2017'},
     {data: [90, 150, 200, 45], label: '2018'}
@@ -37,8 +37,4 @@ export class ReportsComponent implements OnInit {
   public pieChartLabels = ['ሩብ ዓመት 1', 'ሩብ ዓመት 2', 'ሩብ ዓመት 3', 'ሩብ ዓመት 4'];
   public pieChartData = [120, 150, 180, 90];
   public pieChartType = 'pie';
-
-  ngOnInit() {
-  }
-
 }
